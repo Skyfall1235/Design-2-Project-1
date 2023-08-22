@@ -46,9 +46,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private KeyCode m_interactKey;
 
+    /// <summary>
+    /// reference to the ships manager script
+    /// </summary>
+    
+    private ShipManager m_shipManager;
+
     #endregion
-
-
+    
     private void Start()
     {
         StartAssembly();
@@ -142,7 +147,7 @@ public class PlayerController : MonoBehaviour
             // If the interface is implemented, call the Interact method
             if (interactable != null)
             {
-                interactable.Interact();
+                interactable.Interact(m_shipManager);
             }
         }
     }
