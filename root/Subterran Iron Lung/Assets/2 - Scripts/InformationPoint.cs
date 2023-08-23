@@ -5,7 +5,12 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class InformationPoint : MonoBehaviour, IInteractable
 {
-
+    [SerializeField] private InteractableType interactableType;
+    public InteractableType InteractableType
+    {
+        get { return interactableType; }
+        set { interactableType = value; }
+    }
 
 
     Collider m_detectionCollider;
