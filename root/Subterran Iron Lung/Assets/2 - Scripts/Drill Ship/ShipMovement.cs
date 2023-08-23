@@ -44,6 +44,12 @@ public class ShipMovement : MonoBehaviour
             characterController.Move(forwardDirection * drillMovementSpeed);
             Moving = true;
         }
+        else if(Input.GetKey(KeyCode.S))
+        {
+            Vector3 backwardDirection = -transform.forward;
+            characterController.Move(backwardDirection * drillMovementSpeed);
+            Moving = true;
+        }
         else
         {
             Moving = false;

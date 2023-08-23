@@ -49,6 +49,8 @@ public enum EventTriggerType
     ConsoleWarning,
     Rumble,
     SoundTrigger,
+    EngineMalfunction,
+    ConsoleAndLights,
     All
 }
 
@@ -59,7 +61,11 @@ public enum InteractableType
     InfoPoint,
     Ship,
     Player,
-    Button
+    Button,
+    Rock,
+    Ore,
+    DataBeacon,
+    Harmful
 }
 
 
