@@ -440,84 +440,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1766165148}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &599592102
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1536397316038911366, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: groundPad
-      value: 
-      objectReference: {fileID: 898414574}
-    - target: {fileID: 1536397316038911366, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_groundPad
-      value: 
-      objectReference: {fileID: 898414574}
-    - target: {fileID: 5072400501603018915, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_Name
-      value: LevelnessIndicator
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 6.543
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155470849395906316, guid: c0645226a28f5ca4c991fcf28eb4ca46,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c0645226a28f5ca4c991fcf28eb4ca46, type: 3}
 --- !u!1 &898414574
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +565,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DrillShip
       objectReference: {fileID: 0}
+    - target: {fileID: 1592294551206449244, guid: c47c1066b65e89e498cfd7cee4002a4d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1693666639968686327, guid: c47c1066b65e89e498cfd7cee4002a4d,
         type: 3}
       propertyPath: shipManager
@@ -718,6 +645,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3704463692126311805, guid: c47c1066b65e89e498cfd7cee4002a4d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4687066914299226289, guid: c47c1066b65e89e498cfd7cee4002a4d,
         type: 3}
       propertyPath: m_groundPad
@@ -728,7 +660,18 @@ PrefabInstance:
       propertyPath: groundPad
       value: 
       objectReference: {fileID: 898414574}
-    m_RemovedComponents: []
+    - target: {fileID: 5395067872039906110, guid: c47c1066b65e89e498cfd7cee4002a4d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8621746771912846418, guid: c47c1066b65e89e498cfd7cee4002a4d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.893
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 831590630967267992, guid: c47c1066b65e89e498cfd7cee4002a4d, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4271648311981472082, guid: c47c1066b65e89e498cfd7cee4002a4d, type: 3}
     m_AddedGameObjects:
@@ -746,4 +689,3 @@ SceneRoots:
   - {fileID: 898414578}
   - {fileID: 515095117}
   - {fileID: 2383251550121220713}
-  - {fileID: 599592102}

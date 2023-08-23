@@ -6,7 +6,7 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    public InteractableType InteractableType { get; }
+    public InteractableType InteractableType { get; set; }
 
     /// <summary>
     /// Interacts with this object.

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Chair : MonoBehaviour, IInteractable
@@ -40,7 +41,7 @@ public class Chair : MonoBehaviour, IInteractable
             {
                 playerIsSitting = false;
                 playerController.GetComponent<CharacterController>().enabled = true;
-
+                drillMovement.PlayerIsSeated = false;
             }
 
         }
@@ -57,6 +58,9 @@ public class Chair : MonoBehaviour, IInteractable
         playerIsSitting = true;
 
         //potentially limit the head turning ability
+
+        //toggle on the movement for the ship
+        drillMovement.PlayerIsSeated = true;
 
     }
     void IInteractable.Interact(ManagerToObjectivePacket dataPacket, ShipManager manager)
