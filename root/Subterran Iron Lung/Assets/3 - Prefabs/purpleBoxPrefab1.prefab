@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4307508849810746710}
   - component: {fileID: 1932899701130748546}
   m_Layer: 0
-  m_Name: purpleBoxPrefab
+  m_Name: purpleBoxPrefab1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

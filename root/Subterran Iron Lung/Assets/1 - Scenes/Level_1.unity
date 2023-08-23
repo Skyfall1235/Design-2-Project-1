@@ -342,6 +342,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2030876986}
+  - component: {fileID: 2030876987}
   m_Layer: 0
   m_Name: RockGeneration
   m_TagString: Untagged
@@ -364,6 +365,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2030876987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030876985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5920bd80259303340b0d1cfdf8cacd5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockPrefab02: {fileID: 100000, guid: 05e04fedc78047c48af519e94c595e13, type: 3}
+  rockPrefab03: {fileID: 100000, guid: 48320e7576ce0664eb501ebbd6c815da, type: 3}
+  rockPrefab04: {fileID: 100000, guid: 6013a9231cbf28447817bbf406307ad6, type: 3}
+  rockPrefab05: {fileID: 100000, guid: d27239c9a7de0f243876d949bb27027b, type: 3}
+  rockPrefab06: {fileID: 100000, guid: 476d7e24f53ccf641805646d05f61bde, type: 3}
+  radioPrefab: {fileID: 919132149155446097, guid: 9509c5b766352084a9e9847b113590b2,
+    type: 3}
+  rockSpacing: {x: 1, y: 0, z: 1}
+  mapSize: {x: 10, y: 10, z: 10}
+  minYPosition: 0.5
+  maxYPosition: 20
+  maxRadios: 3
 --- !u!1001 &5259631870416086548
 PrefabInstance:
   m_ObjectHideFlags: 0
