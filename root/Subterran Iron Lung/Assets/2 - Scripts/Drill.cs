@@ -19,7 +19,7 @@ public class Drill : MonoBehaviour
     private void CheckForInteractable()
     {
         // Cast a ray from the drill's tip forward
-        Ray ray = new Ray(drill.position, drill.forward);
+        Ray ray = new Ray(gameObject.transform.position, gameObject.transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))

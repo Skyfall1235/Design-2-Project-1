@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
+
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
@@ -79,19 +81,25 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void AssembleControls()
     {
-        // Check if the player is on the ground
-        m_isGrounded = m_characterController.isGrounded;
 
-        if (m_isGrounded && m_playerVelocity.y < 0)
+        if (m_characterController.enabled)
         {
-            m_playerVelocity.y = -2.0f; // A small value to ensure the player sticks to the ground
+            // Check if the player is on the ground
+            m_isGrounded = m_characterController.isGrounded;
+            // Applying gravity
+            if (m_isGrounded && m_playerVelocity.y < 0)
+            {
+                m_playerVelocity.y = -2.0f; // A small value to ensure the player sticks to the ground
+            }
+
+            m_playerVelocity.y += m_gravity * Time.deltaTime;
+            m_characterController.Move(m_playerVelocity * Time.deltaTime);
         }
         HandleKeyboardInput();
-        // Applying gravity
-        m_playerVelocity.y += m_gravity * Time.deltaTime;
-        m_characterController.Move(m_playerVelocity * Time.deltaTime);
-
+        
         HandleMouseInput();
+
+        HandleInteract();
     }
 
     /// <summary>
@@ -103,12 +111,18 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 move = transform.right * horizontalInput + transform.forward * verticalInput;
-        m_characterController.Move(move * m_moveSpeed * Time.deltaTime);
+        
+        //Debug.Log(m_characterController.velocity);
+        //Debug.Log(m_characterController.velocity.magnitude);
 
-        // Jumping
-        if (m_isGrounded && Input.GetButtonDown("Jump"))
+        if(m_characterController.enabled)
         {
-            m_playerVelocity.y = Mathf.Sqrt(m_jumpHeight * -2.0f * m_gravity);
+            m_characterController.Move(move * m_moveSpeed * Time.deltaTime);
+            // Jumping
+            if (m_isGrounded && Input.GetButtonDown("Jump"))
+            {
+                m_playerVelocity.y = Mathf.Sqrt(m_jumpHeight * -2.0f * m_gravity);
+            }
         }
     }
 
@@ -127,9 +141,12 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void HandleSitting()
+    void HandleInteract()
     {
-        //needs to be able to toggle off the movement while retaining mouse control
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            Interact();
+        }
     }
 
 
@@ -143,10 +160,19 @@ public class PlayerController : MonoBehaviour
         {
             // Check if the hit object implements the IInteractable interface
             IInteractable interactable = hitInfo.collider.GetComponent<IInteractable>();
-
+            Debug.Log(hitInfo.collider.gameObject);
             // If the interface is implemented, call the Interact method
-            if (interactable != null)
+            if(interactable.InteractableType == InteractableType.Console)
+            { 
+                
+            }
+            else if(interactable.InteractableType == InteractableType.Button)
             {
+
+            }
+            else
+            {
+                Debug.Log("attempts to run interaction Code");
                 interactable.Interact(m_shipManager);
             }
         }

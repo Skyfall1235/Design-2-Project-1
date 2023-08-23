@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class ShipManager : MonoBehaviour , IInteractable
 {
-    
+    [SerializeField] private InteractableType interactableType;
+    public InteractableType InteractableType
+    {
+        get { return interactableType; }
+        set { interactableType = value; }
+    }
 
 
     // Start is called before the first frame update
