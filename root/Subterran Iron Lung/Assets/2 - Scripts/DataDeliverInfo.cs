@@ -17,7 +17,7 @@ public interface IInteractable
     /// Interacts with this object from the manager's perspective.
     /// </summary>
     /// <param name="dataPacket">The data packet from the manager to the objective.</param>
-    public void Interact(ManagerToObjectivePacket dataPacket, ShipManager manager);
+    public void Interact(ShipManager manager, ManagerToObjectivePacket dataPacket);
 
 }
 
@@ -68,38 +68,68 @@ public static class GlobalMethods
 }
 
 
+/// <summary>
+/// A packet struct for sending data from objectives to the manager.
+/// </summary>
 [System.Serializable]
 public struct ObjectiveToManagerPacket
 {
-    //needs to communicate that is is where it it, what is is, and any other math data
+    /// <summary>
+    /// Indicates if the packet should trigger a drill event.
+    /// </summary>
     public bool triggerDrillEvent;
+
+    /// <summary>
+    /// The type of event trigger.
+    /// </summary>
     public EventTriggerType triggerType;
 
+    /// <summary>
+    /// Text to display on the console.
+    /// </summary>
     public string consoleText;
-    public AudioClip audioClip;
-    public bool rumble;
 
+    /// <summary>
+    /// AudioClip associated with the packet.
+    /// </summary>
+    public AudioClip audioClip;
+
+    /// <summary>
+    /// Indicates if the packet should cause rumble.
+    /// </summary>
+    public bool rumble;
 }
 
+/// <summary>
+/// A packet struct for sending data from the manager to objectives.
+/// </summary>
 [System.Serializable]
 public struct ManagerToObjectivePacket
 {
-    //needs to trigger something on the objective side to either be mines or something else
+    /// <summary>
+    /// Indicates if the packet should trigger an objective event.
+    /// </summary>
     public bool triggerObjectiveEvent;
-
 }
 
+/// <summary>
+/// Types of events that can be triggered.
+/// </summary>
 [System.Serializable]
 public enum EventTriggerType
-{ 
+{
     ConsoleWarning,
     Rumble,
     SoundTrigger,
     EngineMalfunction,
     ConsoleAndLights,
-    All
+    All,
+    None
 }
 
+/// <summary>
+/// Types of interactable objects.
+/// </summary>
 [System.Serializable]
 public enum InteractableType
 {
@@ -114,14 +144,48 @@ public enum InteractableType
     Harmful
 }
 
+/// <summary>
+/// A struct to hold console message data.
+/// </summary>
+[System.Serializable]
+public struct ConsoleMessage
+{
+    /// <summary>
+    /// Panel to display warning.
+    /// </summary>
+    public GameObject warningPanel;
+
+    /// <summary>
+    /// Warning message to display.
+    /// </summary>
+    public string warningMessage;
+
+    /// <summary>
+    /// Indicates if the message is active.
+    /// </summary>
+    public bool isActive;
+}
+
+/// <summary>
+/// A struct to hold collections of sound files.
+/// </summary>
 [System.Serializable]
 public struct Sounds
 {
-    //collection name is for referring in the inspector. please use the soundName string when required
+    /// <summary>
+    /// Name of the collection for reference.
+    /// </summary>
     [SerializeField] public string collectionName;
-    //soudfile should be the onl;y accessible part
+
+    /// <summary>
+    /// List of sound clips in the collection.
+    /// </summary>
     [SerializeField] public List<AudioClip> soundFile;
 }
+
+/// <summary>
+/// Types of sound files.
+/// </summary>
 public enum SoundType
 {
     SoundEffect,

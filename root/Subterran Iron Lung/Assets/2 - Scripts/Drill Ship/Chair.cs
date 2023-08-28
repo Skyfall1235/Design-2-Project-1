@@ -63,7 +63,7 @@ public class Chair : MonoBehaviour, IInteractable
         drillMovement.PlayerIsSeated = true;
 
     }
-    void IInteractable.Interact(ManagerToObjectivePacket dataPacket, ShipManager manager)
+    void IInteractable.Interact(ShipManager manager, ManagerToObjectivePacket dataPacket)
     {
         return;
     }
