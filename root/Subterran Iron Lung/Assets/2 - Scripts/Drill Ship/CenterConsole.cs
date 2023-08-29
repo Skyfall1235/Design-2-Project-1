@@ -192,19 +192,20 @@ public class CenterConsole : MonoBehaviour
             case EventTriggerType.EngineMalfunction:
                 // Handle Engine Malfunction event
                 ToggleGameObjects(m_EventsPanels, false);
-                m_EventsPanels[1].SetActive(true);
+
+                AlertOnConsoleThree(m_EventsPanels[1]);
                 return false;
 
             case EventTriggerType.ReactorMalfunction:
                 // Handle Reactor Malfunction event
                 ToggleGameObjects(m_EventsPanels, false);
-                m_EventsPanels[2].SetActive(true);
+                AlertOnConsoleThree(m_EventsPanels[2]);
                 return false;
 
             case EventTriggerType.Biological:
                 // Handle Biological event
                 ToggleGameObjects(m_EventsPanels, false);
-                m_EventsPanels[3].SetActive(true);
+                AlertOnConsoleThree(m_EventsPanels[3]);
                 return false;
 
             case EventTriggerType.ConsoleWarning:
@@ -269,13 +270,20 @@ public class CenterConsole : MonoBehaviour
     }
 
 
-    private void AlertOnConsoleThree(GameObject warningPanel )
+    private void AlertOnConsoleThree(GameObject warningPanel)
     {
-
+        StartCoroutine(HandleFlashing(warningPanel));
     }
-    IEnumerator HandleFlashing()
+    IEnumerator HandleFlashing( GameObject panel)
     {
-        yield return new WaitForSeconds(1);
+        panel.SetActive(true);
+        yield return new WaitForSeconds(2);
+        panel.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        while (!(m_shipsCurrentEvent == EventTriggerType.None)) 
+        {
+            HandleFlashing(panel);
+        }
     }
 
     #endregion
