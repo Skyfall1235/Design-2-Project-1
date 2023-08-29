@@ -37,7 +37,7 @@ public class InformationPoint : MonoBehaviour, IInteractable
     /// Interacts with this object from the manager's perspective.
     /// </summary>
     /// <param name="dataPacket">The data packet from the manager to the objective.</param>
-    void IInteractable.Interact(ManagerToObjectivePacket dataPacket, ShipManager manager)
+    void IInteractable.Interact(ShipManager manager, ManagerToObjectivePacket dataPacket)
     {
         //datapacket tells the object to update certain things like its mesh
         
