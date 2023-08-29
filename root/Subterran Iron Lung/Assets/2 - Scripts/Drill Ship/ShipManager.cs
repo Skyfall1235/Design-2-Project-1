@@ -20,9 +20,11 @@ public class ShipManager : MonoBehaviour, IInteractable
     /// </summary>
     public EventTriggerType currentEvent;
 
-    [SerializeField] private ConsoleMessage[] consoleMessages = new ConsoleMessage[0]; // Array of console messages associated with this interactable object.
+    //[SerializeField] private ConsoleMessage[] consoleMessages = new ConsoleMessage[0]; // Array of console messages associated with this interactable object.
 
     [SerializeField] CenterConsole console;
+
+    [SerializeField] Light[] consoleLight;
     // Start is called before the first frame update
     void Start()
     {

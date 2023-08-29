@@ -96,7 +96,7 @@ public class CenterConsole : MonoBehaviour
     #endregion
 
 
-    #region UpdateMonitors
+    #region Update Monitors
 
     /// <summary>
     /// Updates the information diplayed on monitor one
@@ -266,6 +266,16 @@ public class CenterConsole : MonoBehaviour
         {
             obj.SetActive(isActive);
         }
+    }
+
+
+    private void AlertOnConsoleThree(GameObject warningPanel )
+    {
+
+    }
+    IEnumerator HandleFlashing()
+    {
+        yield return new WaitForSeconds(1);
     }
 
     #endregion
