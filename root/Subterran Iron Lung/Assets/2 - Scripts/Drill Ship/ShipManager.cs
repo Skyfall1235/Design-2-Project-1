@@ -22,7 +22,7 @@ public class ShipManager : MonoBehaviour, IInteractable
 
     [SerializeField] private ConsoleMessage[] consoleMessages = new ConsoleMessage[0]; // Array of console messages associated with this interactable object.
 
-
+    [SerializeField] CenterConsole console;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +32,30 @@ public class ShipManager : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        
+        DetectChange();
+    }
+
+    //DEBUG
+    private void DetectChange()
+    {
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                currentEvent = EventTriggerType.EngineMalfunction;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                currentEvent = EventTriggerType.ReactorMalfunction;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                currentEvent = EventTriggerType.Biological;
+            }
+
+            // Call a method to handle the changed event
+            console.UpdateMonitorThree();
+
+        }
     }
 
     void IInteractable.Interact(ShipManager manager)

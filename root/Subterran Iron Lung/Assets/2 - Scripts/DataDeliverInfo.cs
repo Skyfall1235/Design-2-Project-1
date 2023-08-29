@@ -67,7 +67,7 @@ public static class GlobalMethods
     #endregion
 }
 
-
+#region Structs
 /// <summary>
 /// A packet struct for sending data from objectives to the manager.
 /// </summary>
@@ -113,38 +113,6 @@ public struct ManagerToObjectivePacket
 }
 
 /// <summary>
-/// Types of events that can be triggered.
-/// </summary>
-[System.Serializable]
-public enum EventTriggerType
-{
-    ConsoleWarning,
-    Rumble,
-    SoundTrigger,
-    EngineMalfunction,
-    ConsoleAndLights,
-    All,
-    None
-}
-
-/// <summary>
-/// Types of interactable objects.
-/// </summary>
-[System.Serializable]
-public enum InteractableType
-{
-    Console,
-    InfoPoint,
-    Ship,
-    Player,
-    Button,
-    Rock,
-    Ore,
-    DataBeacon,
-    Harmful
-}
-
-/// <summary>
 /// A struct to hold console message data.
 /// </summary>
 [System.Serializable]
@@ -182,7 +150,43 @@ public struct Sounds
     /// </summary>
     [SerializeField] public List<AudioClip> soundFile;
 }
+#endregion
 
+
+#region Enums
+/// <summary>
+/// Types of events that can be triggered.
+/// </summary>
+[System.Serializable]
+public enum EventTriggerType
+{
+    EngineMalfunction,
+    ReactorMalfunction,
+    Biological,
+    ConsoleWarning,
+    Rumble,
+    SoundTrigger,
+    ConsoleAndLights,
+    All,
+    None
+}
+
+/// <summary>
+/// Types of interactable objects.
+/// </summary>
+[System.Serializable]
+public enum InteractableType
+{
+    Console,
+    InfoPoint,
+    Ship,
+    Player,
+    Button,
+    Rock,
+    Ore,
+    DataBeacon,
+    Harmful
+}
 /// <summary>
 /// Types of sound files.
 /// </summary>
@@ -191,6 +195,7 @@ public enum SoundType
     SoundEffect,
     Music
 }
+#endregion
 
 
 

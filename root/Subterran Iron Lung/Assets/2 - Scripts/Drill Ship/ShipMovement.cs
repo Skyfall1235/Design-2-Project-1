@@ -13,10 +13,7 @@ public class ShipMovement : MonoBehaviour
     [SerializeField] float drillTurnSpeed = 1;
     [SerializeField] private CharacterController characterController;
     [SerializeField]
-    public GameObject groundPad
-    {
-        get { return groundPad; }
-    }
+    public GameObject groundPad;
     [SerializeField] private bool leveledOut = false;
     [SerializeField] private bool Moving = false;
     public bool PlayerIsSeated = false;
