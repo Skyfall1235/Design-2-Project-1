@@ -151,6 +151,73 @@ public struct Sounds
     [SerializeField] public List<AudioClip> soundFile;
 }
 
+/// <summary>
+/// Represents a task that needs to be completed for an objective.
+/// </summary>
+[System.Serializable]
+public struct ObjectiveTask
+{
+    /// <summary>
+    /// The name of the object that the objective is linked to.
+    /// </summary>
+    public string objectiveObjectName;
+    /// <summary>
+    /// Types of tasks that can be assigned to an objective.
+    /// </summary>
+    public enum TaskType
+    {
+        GoToLocation,   // Task to reach a specific location.
+        Interact,       // Task to interact with an object.
+        Drill           // Task to perform drilling action.
+                        // Add more task types as needed
+    }
+
+    /// <summary>
+    /// The type of task.
+    /// </summary>
+    public TaskType type;
+
+    /// <summary>
+    /// The interactable object for the task (used for Interact tasks).
+    /// </summary>
+    public GameObject interactableObject;
+
+    /// <summary>
+    /// The target location for the task (used for GoToLocation tasks).
+    /// </summary>
+    public Vector3 targetLocation;
+
+    /// <summary>
+    /// Indicates whether the task has been completed.
+    /// </summary>
+    public bool taskCompleted;
+
+
+    public void AssignLocation()
+    { targetLocation = interactableObject.transform.position; }
+}
+
+/// <summary>
+/// Represents an objective in the game.
+/// </summary>
+[System.Serializable]
+public struct Objective
+{
+    /// <summary>
+    /// The description of the objective.
+    /// </summary>
+    public string objectiveDescription;
+
+    /// <summary>
+    /// Indicates whether the objective has been completed.
+    /// </summary>
+    public bool objectiveCompleted;
+
+    /// <summary>
+    /// List of tasks associated with the objective.
+    /// </summary>
+    public List<ObjectiveTask> objectiveTasks;
+}
 
 
 #endregion

@@ -25,11 +25,14 @@ public class ShipManager : MonoBehaviour, IInteractable
     [SerializeField] CenterConsole console;
 
     [SerializeField] Light[] consoleLight;
+    [SerializeField] List<Objective> missionObjectives;
+
     // Start is called before the first frame update
     void Start()
     {
         
     }
+
 
     // Update is called once per frame
     void Update()
@@ -53,6 +56,10 @@ public class ShipManager : MonoBehaviour, IInteractable
             {
                 currentEvent = EventTriggerType.Biological;
             }
+            else if (Input.GetKeyDown(KeyCode.Keypad0))
+            {
+                currentEvent = EventTriggerType.None;
+            }
 
             // Call a method to handle the changed event
             console.UpdateMonitorThree();
@@ -70,4 +77,15 @@ public class ShipManager : MonoBehaviour, IInteractable
         //datapacket tells the object to update certain things like its mesh
 
     }
+
+    #region too much regional code im sorry
+
+
+
+
+
+
+
+
+    #endregion
 }
