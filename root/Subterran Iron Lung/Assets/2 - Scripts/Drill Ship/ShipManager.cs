@@ -17,7 +17,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     /// <summary>
     /// The current event trigger type for the interactable object.
     /// </summary>
-    public EventTriggerType m_currentEvent;
+    public EventTriggerType m_currentEvent = EventTriggerType.None;
 
     [SerializeField] CenterConsole m_console;
     [SerializeField] Light[] m_consoleLight;
