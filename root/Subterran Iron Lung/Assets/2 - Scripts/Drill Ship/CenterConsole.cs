@@ -28,7 +28,7 @@ public class CenterConsole : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_consoleLog;
     [SerializeField] private EventTriggerType m_shipsCurrentEvent
     {
-        get { return m_shipManager.currentEvent; }
+        get { return m_shipManager.m_currentEvent; }
     }
 
     void Update()
@@ -53,6 +53,7 @@ public class CenterConsole : MonoBehaviour
     /// <summary>
     /// updates the information displayed on monitor three
     /// </summary>
+    /// <remarks>This should be called through the ship manager, when events occur instead of just being an update thing</remarks>
     public void UpdateMonitorThree()
     {
         //if the console doesnt have a warning, show the logs for the data

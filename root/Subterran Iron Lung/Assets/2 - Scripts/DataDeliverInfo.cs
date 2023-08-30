@@ -6,18 +6,18 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    public InteractableType InteractableType { get; set; }
+    public InteractableType InteractableType { get; }
 
     /// <summary>
     /// Interacts with this object.
     /// </summary>
-    public void Interact(ShipManager manager);
+    void Interact(ShipManager manager) { }
 
     /// <summary>
     /// Interacts with this object from the manager's perspective.
     /// </summary>
     /// <param name="dataPacket">The data packet from the manager to the objective.</param>
-    public void Interact(ShipManager manager, ManagerToObjectivePacket dataPacket);
+    void Interact(ShipManager manager, ManagerToObjectivePacket dataPacket) { }
 
 }
 
@@ -191,10 +191,6 @@ public struct ObjectiveTask
     /// Indicates whether the task has been completed.
     /// </summary>
     public bool taskCompleted;
-
-
-    public void AssignLocation()
-    { targetLocation = interactableObject.transform.position; }
 }
 
 /// <summary>
