@@ -16,11 +16,13 @@ public class CenterConsole : MonoBehaviour
     {
         get { return gameObject; } // Reference to this GameObject.
     }
+    [Space]
 
     [Header("Screen 1")]
     [SerializeField] private Slider m_energySlider; // Reference to the energy slider UI element.
     [SerializeField] private Slider m_RMPSlider; // Reference to the RPM slider UI element.
     [SerializeField] private TextMeshProUGUI m_screen1TMP_GUI; // Reference to TextMeshProUGUI for Screen 1.
+    [Space]
 
     [Header("Screen 3")]
     [SerializeField] private GameObject m_canvas; // Reference to the canvas GameObject for Screen 3.
@@ -65,7 +67,6 @@ public class CenterConsole : MonoBehaviour
         //else gets covered by the method being called anyway
     }
 
-
     /// <summary>
     /// List of console log lines.
     /// </summary>
@@ -82,6 +83,7 @@ public class CenterConsole : MonoBehaviour
     /// <param name="text">The text to add to the console log.</param>
     public void AddTextToConsole(string text)
     {
+        Debug.Log($"{text} has been added to console");
         // Prep text
         string preppedText = $"\n{text}";
 
@@ -93,6 +95,7 @@ public class CenterConsole : MonoBehaviour
         {
             m_consoleLogs.RemoveAt(0); // Remove the oldest line
         }
+        UpdateMonitorThree();
     }
     #endregion
 
@@ -180,7 +183,6 @@ public class CenterConsole : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// Determines the console output and controls the active state of event panels.
     /// </summary>
@@ -256,7 +258,6 @@ public class CenterConsole : MonoBehaviour
         return false;
     }
 
-
     /// <summary>
     /// Toggles the active state of an array of GameObjects.
     /// </summary>
@@ -264,27 +265,38 @@ public class CenterConsole : MonoBehaviour
     /// <param name="isActive">The desired active state (true for active, false for inactive).</param>
     private void ToggleGameObjects(GameObject[] objectsToToggle, bool isActive)
     {
+        Debug.Log("trying to toggle the object");
         foreach (GameObject obj in objectsToToggle)
         {
+            Debug.Log(obj);
             obj.SetActive(isActive);
         }
     }
-
 
     private void AlertOnConsoleThree(GameObject warningPanel)
     {
         StartCoroutine(HandleFlashing(warningPanel));
     }
-    IEnumerator HandleFlashing( GameObject panel)
+    private IEnumerator HandleFlashing(GameObject panel)
     {
-        panel.SetActive(true);
-        yield return new WaitForSeconds(2);
-        panel.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
-        while (!(m_shipsCurrentEvent == EventTriggerType.None)) 
+        bool flashing = true;
+        
+
+        while (flashing)
         {
-            HandleFlashing(panel);
+            panel.SetActive(true);
+            yield return new WaitForSeconds(2);
+            panel.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+
+            // Check if the event has changed to EventTriggerType.None
+            if (m_shipsCurrentEvent == EventTriggerType.None)
+            {
+                flashing = false;
+            }
         }
+
+        panel.SetActive(false);
     }
 
     #endregion
