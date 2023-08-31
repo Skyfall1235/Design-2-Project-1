@@ -86,6 +86,7 @@ public class MainMenuUI : MonoBehaviour
     public void Options()
     {
         optionsPanel.SetActive(true);
+        Debug.Log("options open");
         optionsIsOpen = true;
     }
 
