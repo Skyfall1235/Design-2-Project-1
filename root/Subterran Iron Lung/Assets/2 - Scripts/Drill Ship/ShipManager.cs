@@ -19,29 +19,8 @@ public class ShipManager : MonoBehaviour, IInteractable
     /// </summary>
     public EventTriggerType m_currentEvent = EventTriggerType.None;
 
-
-
-    /// <summary>
-    /// The current event trigger type for the interactable object.
-    /// </summary>
-    public EventTriggerType CurrentEvent
-    {
-        get { return m_currentEvent; }
-        set
-        {
-            if (m_currentEvent != value)
-            {
-                m_currentEvent = value;
-                m_console.UpdateMonitorThree();
-            }
-        }
-    }
-
     [SerializeField] CenterConsole m_console;
     [SerializeField] Light[] m_consoleLight;
-    [SerializeField] Light[] savedLigtProfile;
-
-    [Space]
     [Header("Objectives")]
     public Objective m_currentObjective;
     public ObjectiveTask m_currentTask;
@@ -54,37 +33,40 @@ public class ShipManager : MonoBehaviour, IInteractable
         SetupTasks();
         AssignNextObjectiveAndTask();
         DebugTask(m_currentTask);
-        m_console.AddTextToConsole($"New Objective: {m_currentObjective.objectiveDescription}");
-        m_console.AddTextToConsole($"Task: Find {m_currentTask.objectiveObjectName}");
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        DebugDetectChange();
+        DetectChange();
     }
 
     //DEBUG
-    private void DebugDetectChange()
+    private void DetectChange()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            CurrentEvent = EventTriggerType.EngineMalfunction;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            CurrentEvent = EventTriggerType.ReactorMalfunction;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            CurrentEvent = EventTriggerType.Biological;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            CurrentEvent = EventTriggerType.None;
-        }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                m_currentEvent = EventTriggerType.EngineMalfunction;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                m_currentEvent = EventTriggerType.ReactorMalfunction;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                m_currentEvent = EventTriggerType.Biological;
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad0))
+            {
+                m_currentEvent = EventTriggerType.None;
+            }
 
+            // Call a method to handle the changed event
+            m_console.UpdateMonitorThree();
+
+        }
     }
 
     //setup of the tasks
@@ -137,9 +119,6 @@ public class ShipManager : MonoBehaviour, IInteractable
         // If no uncompleted objective/task is found
         Debug.Log("No available objectives or tasks.");
     }
-
-
-
 
     void IInteractable.Interact(ShipManager manager)
     {

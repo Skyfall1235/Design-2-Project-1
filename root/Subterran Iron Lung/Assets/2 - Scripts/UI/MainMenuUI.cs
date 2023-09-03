@@ -7,75 +7,20 @@ using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [SerializeField] private SceneData[] scenes;
+    [SerializeField] public AsyncLoader loader;
     [SerializeField] private GameObject creditsPanel;
     [SerializeField] private GameObject optionsPanel;
     bool optionsIsOpen;
     bool creditsIsOpen;
 
+
     public void PlayTheGame()
     {
-        Debug.Log("attempting to Play");
-        Debug.Log(SceneManager.GetActiveScene().name == scenes[0].scene);
-        if (SceneManager.GetActiveScene().name == scenes[0].scene)
-        {
-            SceneManager.LoadScene(scenes[1].scene);
-            Debug.Log("Scene Should Load");
-        }
+        string sceneName = loader.sceneNames[3];
+        loader.LoadSceneWithFade(sceneName, true);
+
     }
 
-    public void Proceed()
-    {
-        if (SceneManager.GetActiveScene().name == "Title_Screen")
-        {
-            SceneManager.LoadScene(scenes[0].scene);
-        }
-    }
-
-    public void RetryLevel()
-    {
-        if (SceneManager.GetActiveScene().name == "LoseScreenOne")
-        {
-            SceneManager.LoadScene(scenes[1].scene);
-        }
-        if (SceneManager.GetActiveScene().name == "LoseScreenTwo")
-        {
-            SceneManager.LoadScene(scenes[2].scene);
-        }
-        if (SceneManager.GetActiveScene().name == "LoseScreenThree")
-        {
-            SceneManager.LoadScene(scenes[3].scene);
-        }
-    }
-
-    public void NextLevel()
-    {
-        if (SceneManager.GetActiveScene().name == "WinSceneOne")
-        {
-            SceneManager.LoadScene(scenes[2].scene);
-        }
-        if (SceneManager.GetActiveScene().name == "WinSceneTwo")
-        {
-            SceneManager.LoadScene(scenes[3].scene);
-        }
-    }
-
-    public void Instructions()
-    {
-        if (SceneManager.GetActiveScene().name == "MainMenu")
-        {
-            SceneManager.LoadScene("Instructions");
-        }
-    }
-
-    public void MainMenu()
-    {
-        if(SceneManager.GetActiveScene().name != scenes[0].scene)
-        {
-            SceneManager.LoadScene(scenes[0].scene);
-        }
-        
-    }
 
     public void QuitGame()
     {
