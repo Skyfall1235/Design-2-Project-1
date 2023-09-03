@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
@@ -46,12 +48,14 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    private KeyCode m_interactKey;
+    [SerializeField] private KeyCode m_interactKey;
+
+    [SerializeField] private TextMeshProUGUI playerInteractionPrompt;
+    [SerializeField] float m_maxRaycastRange;
 
     /// <summary>
     /// reference to the ships manager script
     /// </summary>
-    
     private ShipManager m_shipManager;
 
 
@@ -67,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         AssembleControls();
+        
     }
 
 
@@ -100,11 +105,12 @@ public class PlayerController : MonoBehaviour
         }
         if(useControls)
         {
+            Cursor.lockState = CursorLockMode.Locked;
             HandleKeyboardInput();
 
             HandleMouseInput();
 
-            HandleInteract();
+            PromptUIForInteraction();
         }
         
     }
@@ -150,9 +156,42 @@ public class PlayerController : MonoBehaviour
 
     void HandleInteract()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(m_interactKey))
         {
             Interact();
+        }
+    }
+
+    void PromptUIForInteraction()
+    {
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hitInfo))
+        {
+            // Check if the hit object implements the IInteractable interface
+            IInteractable interactable = hitInfo.collider.GetComponent<IInteractable>();
+
+            if (interactable != null)
+            {
+                // Prompt the UI to interact with the object
+                playerInteractionPrompt.text = $"Press {m_interactKey} to interact with {hitInfo.collider.gameObject.name}";
+
+                // Check if the distance to the hit object is within a maximum distance
+                float maxDistance = 10f; // Adjust this value as needed
+                if (hitInfo.distance <= maxDistance)
+                {
+                    // Perform interactions here, e.g., call a method on the interactable object
+                    HandleInteract();
+                }
+            }
+            else
+            {
+                // No interactable object found
+                playerInteractionPrompt.text = "";
+            }
+        }
+        else
+        {
+            // No object hit by the raycast
+            playerInteractionPrompt.text = "";
         }
     }
 

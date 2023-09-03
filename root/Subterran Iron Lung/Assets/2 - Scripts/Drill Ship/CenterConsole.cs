@@ -127,8 +127,12 @@ public class CenterConsole : MonoBehaviour
     /// <returns>The height difference as an absolute value</returns>
     private float ElevationCalc()
     {
-        float heightDifference = gameObject.transform.position.y - m_topOfMap.transform.position.y;
-        return Mathf.Abs(heightDifference);
+        if (m_topOfMap != null)
+        {
+            float heightDifference = gameObject.transform.position.y - m_topOfMap.transform.position.y;
+            return Mathf.Abs(heightDifference);
+        }
+        else return 0.0f;
     }
 
     private float HandleEnergyCalc()
