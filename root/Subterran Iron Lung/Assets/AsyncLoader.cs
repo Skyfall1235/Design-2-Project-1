@@ -29,6 +29,7 @@ public class AsyncLoader : MonoBehaviour
         {
             yield return null;
         }
+        Cursor.visible = true;
 
         // Get the loaded main menu scene
         Scene mainMenuScene = SceneManager.GetSceneByName(sceneNames[1]);
@@ -70,6 +71,7 @@ public class AsyncLoader : MonoBehaviour
         if (!isFading)
         {
             StartCoroutine(FadeOutAndLoad(sceneName, includePlayer));
+            Cursor.visible = false;
         }
     }
 

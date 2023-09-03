@@ -30,7 +30,10 @@ public class CenterConsole : MonoBehaviour
     {
         get { return m_shipManager.m_currentEvent; }
     }
-
+    private void Start()
+    {
+        m_topOfMap = GameObject.FindWithTag("TopOfMap");
+    }
     void Update()
     {
         UpdateMonitors();

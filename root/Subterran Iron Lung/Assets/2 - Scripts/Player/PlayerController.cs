@@ -54,6 +54,9 @@ public class PlayerController : MonoBehaviour
     
     private ShipManager m_shipManager;
 
+
+    public bool useControls;
+
     #endregion
     
     private void Start()
@@ -95,11 +98,15 @@ public class PlayerController : MonoBehaviour
             m_playerVelocity.y += m_gravity * Time.deltaTime;
             m_characterController.Move(m_playerVelocity * Time.deltaTime);
         }
-        HandleKeyboardInput();
-        
-        HandleMouseInput();
+        if(useControls)
+        {
+            HandleKeyboardInput();
 
-        HandleInteract();
+            HandleMouseInput();
+
+            HandleInteract();
+        }
+        
     }
 
     /// <summary>
@@ -143,7 +150,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleInteract()
     {
-        if(Input.GetKeyDown(KeyCode.F))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             Interact();
         }
@@ -159,21 +166,25 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hitInfo))
         {
             // Check if the hit object implements the IInteractable interface
-            IInteractable interactable = hitInfo.collider.GetComponent<IInteractable>();
-            Debug.Log(hitInfo.collider.gameObject);
-            // If the interface is implemented, call the Interact method
-            if(interactable.InteractableType == InteractableType.Console)
-            { 
-                
-            }
-            else if(interactable.InteractableType == InteractableType.Button)
-            {
 
-            }
-            else
+            IInteractable interactable = hitInfo.collider.GetComponent<IInteractable>();
+            if (interactable != null) 
             {
-                Debug.Log("attempts to run interaction Code");
-                interactable.Interact(m_shipManager);
+                Debug.Log(hitInfo.collider.gameObject);
+                // If the interface is implemented, call the Interact method
+                if (interactable.InteractableType == InteractableType.Console)
+                {
+
+                }
+                else if (interactable.InteractableType == InteractableType.Button)
+                {
+
+                }
+                else
+                {
+                    Debug.Log("attempts to run interaction Code");
+                    interactable.Interact(m_shipManager);
+                }
             }
         }
     }

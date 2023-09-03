@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShipManager : MonoBehaviour, IInteractable
 {
@@ -25,6 +26,9 @@ public class ShipManager : MonoBehaviour, IInteractable
     public Objective m_currentObjective;
     public ObjectiveTask m_currentTask;
     [SerializeField] List<Objective> m_missionObjectives;
+    [SerializeField] GameObject controlScheme;
+    [SerializeField] GameObject player;
+    public bool showControls;
 
 
     // Start is called before the first frame update
@@ -33,6 +37,17 @@ public class ShipManager : MonoBehaviour, IInteractable
         SetupTasks();
         AssignNextObjectiveAndTask();
         DebugTask(m_currentTask);
+
+        Scene level1Scene = SceneManager.GetSceneByName("Level_1");
+        if (level1Scene.isLoaded)
+        {
+            // "Level_1" scene is open, you can run code in it
+            showControls = true;
+            Debug.Log("cursor should be showing");
+            Cursor.visible = true;
+            ShowControlScheme(showControls);
+            player.GetComponent<PlayerController>().useControls = false;
+        }
     }
 
 
@@ -41,6 +56,24 @@ public class ShipManager : MonoBehaviour, IInteractable
     {
         DetectChange();
     }
+
+    public void ShowControlScheme(bool showControls)
+    {
+        controlScheme.SetActive(showControls);
+        player.GetComponent<PlayerController>().useControls = !showControls;
+        Cursor.visible = showControls;
+        if(showControls)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        
+
+    }
+
 
     //DEBUG
     private void DetectChange()
