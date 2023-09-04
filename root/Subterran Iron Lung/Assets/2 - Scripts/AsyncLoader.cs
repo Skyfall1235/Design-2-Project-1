@@ -4,14 +4,34 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages asynchronous loading and unloading of scenes with fade transitions.
+/// </summary>
 public class AsyncLoader : MonoBehaviour
 {
+    /// <summary>
+    /// A list of scene names to be used during loading and unloading operations.
+    /// </summary>
     public List<string> sceneNames = new List<string>();
-    public Image fadeImage;
-    public GameObject canvas;
-    public float fadeDuration = 1.0f;
 
-    private bool isFading = false;
+    /// <summary>
+    /// The image used for fading transitions.
+    /// </summary>
+    [SerializeField] private Image fadeImage;
+
+    /// <summary>
+    /// The Canvas GameObject associated with this loader.
+    /// </summary>
+    [SerializeField] private GameObject canvas;
+
+    /// <summary>
+    /// The duration of the fade-in and fade-out transitions in seconds.
+    /// </summary>
+    [SerializeField] private float fadeDuration = 1.0f;
+
+
+    [SerializeField] private bool isFading = false;
+
 
     private void Awake()
     {
@@ -66,6 +86,11 @@ public class AsyncLoader : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads a scene with a fade transition and an option to include the player scene.
+    /// </summary>
+    /// <param name="sceneName">The name of the scene to load.</param>
+    /// <param name="includePlayer">Whether to include the player scene.</param>
     public void LoadSceneWithFade(string sceneName, bool includePlayer)
     {
         if (!isFading)
@@ -75,6 +100,11 @@ public class AsyncLoader : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Fades out and loads a new scene asynchronously.
+    /// </summary>
+    /// <param name="sceneName">The name of the scene to load.</param>
+    /// <param name="includePlayer">Whether to include the player scene.</param>
     private IEnumerator FadeOutAndLoad(string sceneName, bool includePlayer)
     {
         canvas.SetActive(true);
@@ -101,6 +131,7 @@ public class AsyncLoader : MonoBehaviour
             {
                 yield return null;
             }
+
         }
         
         // Set the new scene as the active scene
@@ -113,6 +144,11 @@ public class AsyncLoader : MonoBehaviour
         canvas.SetActive(false);
     }
 
+    /// <summary>
+    /// Fades the screen from one alpha value to another over a specified duration.
+    /// </summary>
+    /// <param name="startAlpha">The starting alpha value.</param>
+    /// <param name="endAlpha">The ending alpha value.</param>
     private IEnumerator Fade(float startAlpha, float endAlpha)
     {
         float elapsedTime = 0.0f;
@@ -130,6 +166,10 @@ public class AsyncLoader : MonoBehaviour
         SetFadeAlpha(endAlpha);
     }
 
+    /// <summary>
+    /// Sets the alpha value of the fade image.
+    /// </summary>
+    /// <param name="alpha">The alpha value to set.</param>
     private void SetFadeAlpha(float alpha)
     {
         if (fadeImage != null)
@@ -140,6 +180,9 @@ public class AsyncLoader : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Unloads all scenes that are not explicitly stated as persistant.
+    /// </summary>
     private void UnloadAllScenesExceptPersistent()
     {
         Debug.Log("Unloading all scenes except manager and those in sceneNames list.");

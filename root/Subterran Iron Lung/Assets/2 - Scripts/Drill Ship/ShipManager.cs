@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     [SerializeField] GameObject controlScheme;
     [SerializeField] GameObject player;
     public bool showControls;
+    [SerializeField] private bool lightIsFlashing = false;
 
 
     // Start is called before the first frame update
@@ -48,6 +50,9 @@ public class ShipManager : MonoBehaviour, IInteractable
             ShowControlScheme(showControls);
             player.GetComponent<PlayerController>().useControls = false;
         }
+
+        //DEBUG
+        StartCoroutine(AlternateLights());
     }
 
 
@@ -75,32 +80,62 @@ public class ShipManager : MonoBehaviour, IInteractable
     }
 
 
+    private IEnumerator AlternateLights()
+    {
+        const float interval = 1.0f;
+
+        //preload the alteration
+        m_consoleLight[0].enabled = true;
+        m_consoleLight[2].enabled = true;
+
+        while (lightIsFlashing)
+        {
+            m_consoleLight[0].enabled = !m_consoleLight[0].enabled; 
+            m_consoleLight[1].enabled = !m_consoleLight[1].enabled; 
+            m_consoleLight[2].enabled = !m_consoleLight[2].enabled; 
+            m_consoleLight[3].enabled = !m_consoleLight[3].enabled; 
+
+            yield return new WaitForSeconds(interval);
+        }
+        //turn the lights off when its done
+        for (int i = 0; i < m_consoleLight.Length; i++)
+        {
+            m_consoleLight[i].enabled = false;
+        }
+
+    }
+
+
     //DEBUG
     private void DetectChange()
     {
+        EventTriggerType newEvent = m_currentEvent; // Start with the current event
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                m_currentEvent = EventTriggerType.EngineMalfunction;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                m_currentEvent = EventTriggerType.ReactorMalfunction;
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                m_currentEvent = EventTriggerType.Biological;
-            }
-            else if (Input.GetKeyDown(KeyCode.Keypad0))
-            {
-                m_currentEvent = EventTriggerType.None;
-            }
+            newEvent = EventTriggerType.EngineMalfunction;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            newEvent = EventTriggerType.ReactorMalfunction;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            newEvent = EventTriggerType.Biological;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            newEvent = EventTriggerType.None;
+        }
 
-            // Call a method to handle the changed event
+        if (newEvent != m_currentEvent)
+        {
+            m_currentEvent = newEvent;
+            Debug.Log($"Event changed to: {m_currentEvent}");
             m_console.UpdateMonitorThree();
-
         }
     }
+
 
     //setup of the tasks
     private void SetupTasks()

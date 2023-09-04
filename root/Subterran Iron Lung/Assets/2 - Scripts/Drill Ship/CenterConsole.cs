@@ -213,6 +213,7 @@ public class CenterConsole : MonoBehaviour
             case EventTriggerType.Biological:
                 // Handle Biological event
                 ToggleGameObjects(m_EventsPanels, false);
+                Debug.Log("event occurs and calls for console");
                 AlertOnConsoleThree(m_EventsPanels[3]);
                 return false;
 
@@ -278,20 +279,32 @@ public class CenterConsole : MonoBehaviour
     }
 
 
+    private bool isFlashing = false; // Track whether flashing is active
+
     private void AlertOnConsoleThree(GameObject warningPanel)
     {
-        StartCoroutine(HandleFlashing(warningPanel));
-    }
-    IEnumerator HandleFlashing( GameObject panel)
-    {
-        panel.SetActive(true);
-        yield return new WaitForSeconds(2);
-        panel.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
-        while (!(m_shipsCurrentEvent == EventTriggerType.None)) 
+        Debug.Log($" flashing state is: {isFlashing}");
+        if (!isFlashing)
         {
-            HandleFlashing(panel);
+            StartCoroutine(HandleFlashing(warningPanel));
         }
+    }
+
+    IEnumerator HandleFlashing(GameObject panel)
+    {
+        isFlashing = true; // Mark flashing as active
+
+        while (isFlashing && m_shipsCurrentEvent != EventTriggerType.None)
+        {
+            panel.SetActive(true);
+            yield return new WaitForSeconds(2);
+
+            panel.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        panel.SetActive(false); // Ensure the panel is off when flashing ends
+        isFlashing = false; // Mark flashing as inactive
     }
 
     #endregion
