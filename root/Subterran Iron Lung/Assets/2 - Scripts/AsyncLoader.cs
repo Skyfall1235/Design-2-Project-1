@@ -1,18 +1,50 @@
+/*
+ * Author: Wyatt Murray
+ * Version: 1
+ * Date: 9/4/23
+ * 
+ * Description:
+ * Manages asynchronous loading and unloading of scenes with fade transitions.
+ * 
+ * Setup:
+ * To set up in your project, create a scene with this script on an empty GameObject. 
+ * Create a canvas under it and add a panel that covers the full screen and is colored black.
+ * Remove all other scenes' EventSystems except this one.
+ * Load the necessary data into the Inspector as needed and link the fade image and canvas.
+ * Provide a fade duration of at least 0.25 seconds.
+ * 
+ * Additional Info:
+ * - Ensure that referenced objects are available to call the two public methods.
+ * - Remember that data must be preloaded unless you want to use GameObject.Find.
+ * - This script is designed for loading single scenes with a player scene attached.
+ * - There may be future improvements to support loading multiple scenes simultaneously.
+ */
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-/// <summary>
-/// Manages asynchronous loading and unloading of scenes with fade transitions.
-/// </summary>
 public class AsyncLoader : MonoBehaviour
 {
+    [System.Serializable]
+    public struct DefinedSceneData
+    {
+        /// <summary>
+        /// The name of the Scene as a string.
+        /// </summary>
+        public string sceneName;
+        /// <summary>
+        /// A toggle for labeling which scenes are persistant.
+        /// </summary>
+        public bool isPersistant;
+    }
+
     /// <summary>
     /// A list of scene names to be used during loading and unloading operations.
     /// </summary>
-    public List<string> sceneNames = new List<string>();
+    public List<DefinedSceneData> sceneNames = new List<DefinedSceneData>();
 
     /// <summary>
     /// The image used for fading transitions.
@@ -43,7 +75,7 @@ public class AsyncLoader : MonoBehaviour
     private IEnumerator LoadMainMenuAsync()
     {
         // Load the main menu scene additively
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneNames[1], LoadSceneMode.Additive);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneNames[1].sceneName, LoadSceneMode.Additive);
 
         while (!asyncLoad.isDone)
         {
@@ -52,7 +84,7 @@ public class AsyncLoader : MonoBehaviour
         Cursor.visible = true;
 
         // Get the loaded main menu scene
-        Scene mainMenuScene = SceneManager.GetSceneByName(sceneNames[1]);
+        Scene mainMenuScene = SceneManager.GetSceneByName(sceneNames[1].sceneName);
 
         if (mainMenuScene.isLoaded)
         {
@@ -125,7 +157,7 @@ public class AsyncLoader : MonoBehaviour
 
         if(includePlayer)
         {
-            AsyncOperation playerLoad = SceneManager.LoadSceneAsync(sceneNames[0], LoadSceneMode.Additive);
+            AsyncOperation playerLoad = SceneManager.LoadSceneAsync(sceneNames[0].sceneName, LoadSceneMode.Additive);
 
             while (!playerLoad.isDone)
             {
@@ -185,7 +217,7 @@ public class AsyncLoader : MonoBehaviour
     /// </summary>
     private void UnloadAllScenesExceptPersistent()
     {
-        Debug.Log("Unloading all scenes except manager and those in sceneNames list.");
+        Debug.Log("Unloading all scenes except those in sceneNames list.");
 
         int sceneCount = SceneManager.sceneCount;
 
@@ -193,7 +225,18 @@ public class AsyncLoader : MonoBehaviour
         {
             Scene scene = SceneManager.GetSceneAt(i);
 
-            if (scene.name != "SceneManager")
+            // Check if the scene is marked as persistent in the sceneNames list
+            bool isPersistent = false;
+            foreach (var definedScene in sceneNames)
+            {
+                if (definedScene.sceneName == scene.name && definedScene.isPersistant)
+                {
+                    isPersistent = true;
+                    break;
+                }
+            }
+
+            if (!isPersistent)
             {
                 AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(scene);
 
@@ -211,7 +254,6 @@ public class AsyncLoader : MonoBehaviour
             }
         }
     }
-
 }
 
 

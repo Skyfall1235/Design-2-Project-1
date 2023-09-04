@@ -16,7 +16,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void PlayTheGame()
     {
-        string sceneName = loader.sceneNames[3];
+        string sceneName = loader.sceneNames[3].sceneName;
         loader.LoadSceneWithFade(sceneName, true);
 
     }

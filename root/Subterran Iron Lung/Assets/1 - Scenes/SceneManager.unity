@@ -459,15 +459,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneNames:
-  - Player
-  - Main_Menu
-  - Tutorial
-  - Level_1
-  - Level_2
-  - Level_3
+  - sceneName: Player
+    isPersistant: 0
+  - sceneName: Main_Menu
+    isPersistant: 0
+  - sceneName: SceneManager
+    isPersistant: 1
+  - sceneName: Level_1
+    isPersistant: 0
+  - sceneName: Level_2
+    isPersistant: 0
+  - sceneName: Level_3
+    isPersistant: 0
   fadeImage: {fileID: 1429921360}
   canvas: {fileID: 185700963}
   fadeDuration: 1
+  isFading: 0
 --- !u!4 &1708723994
 Transform:
   m_ObjectHideFlags: 0
