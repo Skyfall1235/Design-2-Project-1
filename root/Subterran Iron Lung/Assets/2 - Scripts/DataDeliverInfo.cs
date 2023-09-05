@@ -134,22 +134,6 @@ public struct ConsoleMessage
     public bool isActive;
 }
 
-/// <summary>
-/// A struct to hold collections of sound files.
-/// </summary>
-[System.Serializable]
-public struct Sounds
-{
-    /// <summary>
-    /// Name of the collection for reference.
-    /// </summary>
-    [SerializeField] public string collectionName;
-
-    /// <summary>
-    /// List of sound clips in the collection.
-    /// </summary>
-    [SerializeField] public List<AudioClip> soundFile;
-}
 
 /// <summary>
 /// Represents a task that needs to be completed for an objective.
@@ -256,14 +240,7 @@ public enum InteractableType
     DataBeacon,
     Harmful
 }
-/// <summary>
-/// Types of sound files.
-/// </summary>
-public enum SoundType
-{
-    SoundEffect,
-    Music
-}
+
 #endregion
 
 

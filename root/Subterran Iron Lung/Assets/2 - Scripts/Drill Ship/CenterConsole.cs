@@ -30,6 +30,18 @@ public class CenterConsole : MonoBehaviour
     {
         get { return m_shipManager.m_currentEvent; }
     }
+
+    /// <summary>
+    /// List of console log lines.
+    /// </summary>
+    private List<string> m_consoleLogs = new List<string>();
+
+    /// <summary>
+    /// Maximum number of lines to maintain in the console log.
+    /// </summary>
+    private const int m_maxLinesOnConsole = 6;
+
+    #region basic methods
     private void Start()
     {
         m_topOfMap = GameObject.FindWithTag("TopOfMap");
@@ -38,6 +50,7 @@ public class CenterConsole : MonoBehaviour
     {
         UpdateMonitors();
     }
+    #endregion
 
     /// <summary>
     /// combines the updates into a specified sequence so we dont have to handle that in update
@@ -47,8 +60,6 @@ public class CenterConsole : MonoBehaviour
         UpdateMonitorOne();
         DetermineRenderTextureUse();
     }
-
-
 
     #region public methods
 
@@ -66,17 +77,6 @@ public class CenterConsole : MonoBehaviour
         }
         //else gets covered by the method being called anyway
     }
-
-
-    /// <summary>
-    /// List of console log lines.
-    /// </summary>
-    private List<string> m_consoleLogs = new List<string>();
-
-    /// <summary>
-    /// Maximum number of lines to maintain in the console log.
-    /// </summary>
-    private const int m_maxLinesOnConsole = 6;
 
 
     string preppedText;
@@ -139,75 +139,6 @@ public class CenterConsole : MonoBehaviour
     }
 
     #endregion
-
-
-    #region Mathmatics behind Update Calls
-
-    /// <summary>
-    /// Determines the depth of an object relative to the top of the map
-    /// </summary>
-    /// <returns>The height difference as an absolute value</returns>
-    private float ElevationCalc()
-    {
-        if (m_topOfMap != null)
-        {
-            float heightDifference = gameObject.transform.position.y - m_topOfMap.transform.position.y;
-            return Mathf.Abs(heightDifference);
-        }
-        else return 0.0f;
-    }
-
-    private float HandleEnergyCalc()
-    {
-        return 0.0f;
-    }
-
-    /// <summary>
-    /// Calculates and returns the cardinal direction based on the forward vector of the GameObject.
-    /// </summary>
-    /// <returns>The cardinal direction (e.g., "North", "Northeast", etc.) as a string.</returns>
-    private string GetDirection()
-    {
-        float angle = Vector3.SignedAngle(gameObject.transform.forward, Vector3.forward, Vector3.up);
-        angle += 180; // Shifting the angle to be between 0 and 360 degrees
-
-        if (angle >= 0 && angle < 22.5f)
-        {
-            return "North";
-        }
-        else if (angle >= 22.5f && angle < 67.5f)
-        {
-            return "Northeast";
-        }
-        else if (angle >= 67.5f && angle < 112.5f)
-        {
-            return "East";
-        }
-        else if (angle >= 112.5f && angle < 157.5f)
-        {
-            return "Southeast";
-        }
-        else if (angle >= 157.5f && angle < 202.5f)
-        {
-            return "South";
-        }
-        else if (angle >= 202.5f && angle < 247.5f)
-        {
-            return "Southwest";
-        }
-        else if (angle >= 247.5f && angle < 292.5f)
-        {
-            return "West";
-        }
-        else if (angle >= 292.5f && angle < 337.5f)
-        {
-            return "Northwest";
-        }
-        else // Angle is between 337.5 and 360 degrees
-        {
-            return "North";
-        }
-    }
 
 
     /// <summary>
@@ -279,7 +210,7 @@ public class CenterConsole : MonoBehaviour
                 ToggleGameObjects(m_EventsPanels, false);
                 m_EventsPanels[0].SetActive(true);
                 return true;
-                
+
         }
         // Handle unknown case
         Debug.LogWarning($"unknown case found? : {triggerType}");
@@ -287,22 +218,75 @@ public class CenterConsole : MonoBehaviour
     }
 
 
+    #region Mathmatics behind Update Calls
+
     /// <summary>
-    /// Toggles the active state of an array of GameObjects.
+    /// Determines the depth of an object relative to the top of the map
     /// </summary>
-    /// <param name="objectsToToggle">The array of GameObjects to toggle.</param>
-    /// <param name="isActive">The desired active state (true for active, false for inactive).</param>
-    private void ToggleGameObjects(GameObject[] objectsToToggle, bool isActive)
+    /// <returns>The height difference as an absolute value</returns>
+    private float ElevationCalc()
     {
-        foreach (GameObject obj in objectsToToggle)
+        if (m_topOfMap != null)
         {
-            obj.SetActive(isActive);
+            float heightDifference = gameObject.transform.position.y - m_topOfMap.transform.position.y;
+            return Mathf.Abs(heightDifference);
+        }
+        else return 0.0f;
+    }
+
+    private float HandleEnergyCalc()
+    {
+        return 0.0f;
+    }
+
+    /// <summary>
+    /// Calculates and returns the cardinal direction based on the forward vector of the GameObject.
+    /// </summary>
+    /// <returns>The cardinal direction (e.g., "North", "Northeast", etc.) as a string.</returns>
+    private string GetDirection()
+    {
+        float angle = Vector3.SignedAngle(gameObject.transform.forward, Vector3.forward, Vector3.up);
+        angle += 180; // Shifting the angle to be between 0 and 360 degrees
+
+        if (angle >= 0 && angle < 22.5f)
+        {
+            return "North";
+        }
+        else if (angle >= 22.5f && angle < 67.5f)
+        {
+            return "Northeast";
+        }
+        else if (angle >= 67.5f && angle < 112.5f)
+        {
+            return "East";
+        }
+        else if (angle >= 112.5f && angle < 157.5f)
+        {
+            return "Southeast";
+        }
+        else if (angle >= 157.5f && angle < 202.5f)
+        {
+            return "South";
+        }
+        else if (angle >= 202.5f && angle < 247.5f)
+        {
+            return "Southwest";
+        }
+        else if (angle >= 247.5f && angle < 292.5f)
+        {
+            return "West";
+        }
+        else if (angle >= 292.5f && angle < 337.5f)
+        {
+            return "Northwest";
+        }
+        else // Angle is between 337.5 and 360 degrees
+        {
+            return "North";
         }
     }
 
-
-    private bool isFlashing = false; // Track whether flashing is active
-
+    private bool isFlashing = false;
     private void AlertOnConsoleThree(GameObject warningPanel)
     {
         Debug.Log($" flashing state is: {isFlashing}");
@@ -327,6 +311,19 @@ public class CenterConsole : MonoBehaviour
 
         panel.SetActive(false); // Ensure the panel is off when flashing ends
         isFlashing = false; // Mark flashing as inactive
+    }
+
+    /// <summary>
+    /// Toggles the active state of an array of GameObjects.
+    /// </summary>
+    /// <param name="objectsToToggle">The array of GameObjects to toggle.</param>
+    /// <param name="isActive">The desired active state (true for active, false for inactive).</param>
+    private void ToggleGameObjects(GameObject[] objectsToToggle, bool isActive)
+    {
+        foreach (GameObject obj in objectsToToggle)
+        {
+            obj.SetActive(isActive);
+        }
     }
 
     #endregion

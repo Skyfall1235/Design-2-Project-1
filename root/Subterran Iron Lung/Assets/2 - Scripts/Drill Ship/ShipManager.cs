@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,16 +20,22 @@ public class ShipManager : MonoBehaviour, IInteractable
     /// </summary>
     public EventTriggerType m_currentEvent = EventTriggerType.None;
 
+    [SerializeField] private Coroutine m_countdownCoroutine;
+
     [SerializeField] CenterConsole m_console;
     [SerializeField] Light[] m_consoleLight;
+
     [Header("Objectives")]
     public Objective m_currentObjective;
     public ObjectiveTask m_currentTask;
     [SerializeField] List<Objective> m_missionObjectives;
-    [SerializeField] GameObject controlScheme;
-    [SerializeField] GameObject player;
-    public bool showControls;
-    [SerializeField] private bool lightIsFlashing = false;
+    [SerializeField] GameObject m_controlScheme;
+    [SerializeField] GameObject m_player;
+    public bool m_showControls;
+    [SerializeField] private bool m_lightIsFlashing = false;
+
+    //[Header("Audio settings and References")]
+
 
 
     // Start is called before the first frame update
@@ -44,11 +49,11 @@ public class ShipManager : MonoBehaviour, IInteractable
         if (level1Scene.isLoaded)
         {
             // "Level_1" scene is open, you can run code in it
-            showControls = true;
+            m_showControls = true;
             Debug.Log("cursor should be showing");
             Cursor.visible = true;
-            ShowControlScheme(showControls);
-            player.GetComponent<PlayerController>().useControls = false;
+            ShowControlScheme(m_showControls);
+            m_player.GetComponent<PlayerController>().useControls = false;
         }
 
         //DEBUG
@@ -59,25 +64,16 @@ public class ShipManager : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        DetectChange();
+        //DetectChange();
     }
 
-    public void ShowControlScheme(bool showControls)
+
+    void EndGame()
     {
-        controlScheme.SetActive(showControls);
-        player.GetComponent<PlayerController>().useControls = !showControls;
-        Cursor.visible = showControls;
-        if(showControls)
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        
 
     }
+
+ 
 
 
     private IEnumerator AlternateLights()
@@ -88,7 +84,7 @@ public class ShipManager : MonoBehaviour, IInteractable
         m_consoleLight[0].enabled = true;
         m_consoleLight[2].enabled = true;
 
-        while (lightIsFlashing)
+        while (m_lightIsFlashing)
         {
             m_consoleLight[0].enabled = !m_consoleLight[0].enabled; 
             m_consoleLight[1].enabled = !m_consoleLight[1].enabled; 
@@ -107,27 +103,13 @@ public class ShipManager : MonoBehaviour, IInteractable
 
 
     //DEBUG
-    private void DetectChange()
+
+    /// <summary>
+    /// Checks if the current event is the same as before. if not, sets the new event to the current and calls an update to the monitor
+    /// </summary>
+    /// <param name="newEvent">The event we would like to pass to the ship problem handler  </param>
+    private void DetectChange(EventTriggerType newEvent)
     {
-        EventTriggerType newEvent = m_currentEvent; // Start with the current event
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            newEvent = EventTriggerType.EngineMalfunction;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            newEvent = EventTriggerType.ReactorMalfunction;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            newEvent = EventTriggerType.Biological;
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            newEvent = EventTriggerType.None;
-        }
-
         if (newEvent != m_currentEvent)
         {
             m_currentEvent = newEvent;
@@ -137,6 +119,92 @@ public class ShipManager : MonoBehaviour, IInteractable
     }
 
 
+    int choice;
+    int timeOutForEvent;
+    private void DetermineShipProblem()
+    {
+        choice = Random.Range(0, 3);
+        timeOutForEvent = Random.Range(10, 26);
+        switch (choice)
+        {
+            case 0:
+                //ship engine problem
+                m_currentEvent = EventTriggerType.EngineMalfunction;
+                StartCountdown(timeOutForEvent);
+                m_lightIsFlashing = true;
+                StartCoroutine(AlternateLights());
+                break;
+            case 1:
+                //ship reactor problem
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
+    #region Countdown Handlers
+    public void StartCountdown(float duration)
+    {
+        // Stop any existing countdown coroutine.
+        if (m_countdownCoroutine != null)
+        {
+            StopCoroutine(m_countdownCoroutine);
+        }
+
+        // Start a new countdown coroutine.
+        m_countdownCoroutine = StartCoroutine(CountdownCoroutine(duration));
+    }
+
+    // Cancel the countdown
+    public void CancelCountdown()
+    {
+        // Stop the countdown coroutine if it's running
+        if (m_countdownCoroutine != null)
+        {
+            StopCoroutine(m_countdownCoroutine);
+            m_countdownCoroutine = null;
+            //this method will reset the events
+            DetectChange(EventTriggerType.None);
+        }
+    }
+
+    // Coroutine that counts down for the specified duration
+    private IEnumerator CountdownCoroutine(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        // This code executes when the countdown is not canceled in time
+        Debug.Log("Loss condition triggered - Timer ran out!");
+        EndGame();
+    }
+
+
+    #endregion
+
+
+    #region UI methods
+    public void ShowControlScheme(bool showControls)
+    {
+        m_controlScheme.SetActive(showControls);
+        m_player.GetComponent<PlayerController>().useControls = !showControls;
+        Cursor.visible = showControls;
+        if (showControls)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+
+    #endregion
+
+
+    #region Tasks
     //setup of the tasks
     private void SetupTasks()
     {
@@ -188,6 +256,10 @@ public class ShipManager : MonoBehaviour, IInteractable
         Debug.Log("No available objectives or tasks.");
     }
 
+    #endregion
+
+
+    #region interaction calls
     void IInteractable.Interact(ShipManager manager)
     {
 
@@ -198,5 +270,6 @@ public class ShipManager : MonoBehaviour, IInteractable
         //datapacket tells the object to update certain things like its mesh
 
     }
+    #endregion
 
 }
