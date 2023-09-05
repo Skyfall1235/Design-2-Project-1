@@ -1458,7 +1458,7 @@ GameObject:
   - component: {fileID: 3634939809631301025}
   - component: {fileID: 6841536203432630326}
   m_Layer: 8
-  m_Name: Camera
+  m_Name: DrillCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
