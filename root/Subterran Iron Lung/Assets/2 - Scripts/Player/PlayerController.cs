@@ -70,6 +70,24 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        if (m_characterController.enabled)
+        {
+            // Check if the player is on the ground
+            m_isGrounded = m_characterController.isGrounded;
+            // Applying gravity
+            if (m_isGrounded && m_playerVelocity.y < 0)
+            {
+                m_playerVelocity.y = -2.0f; // A small value to ensure the player sticks to the ground
+            }
+
+            m_playerVelocity.y += m_gravity * Time.deltaTime;
+            m_characterController.Move(m_playerVelocity * Time.deltaTime);
+        }
+    }
+
+    private void FixedUpdate()
+    {
         AssembleControls();
         
     }
@@ -89,20 +107,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void AssembleControls()
     {
-
-        if (m_characterController.enabled)
-        {
-            // Check if the player is on the ground
-            m_isGrounded = m_characterController.isGrounded;
-            // Applying gravity
-            if (m_isGrounded && m_playerVelocity.y < 0)
-            {
-                m_playerVelocity.y = -2.0f; // A small value to ensure the player sticks to the ground
-            }
-
-            m_playerVelocity.y += m_gravity * Time.deltaTime;
-            m_characterController.Move(m_playerVelocity * Time.deltaTime);
-        }
         if(useControls)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -139,6 +143,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// Handles camera rotation based on mouse input.
     /// </summary>
@@ -150,8 +155,19 @@ public class PlayerController : MonoBehaviour
 
         // Rotate the camera based on mouse input (looking up and down)
         float mouseY = Input.GetAxis("Mouse Y");
-        m_cameraTransform.Rotate(Vector3.left * mouseY);
+
+        // Define the clamping angles to prevent flipping
+        float minVerticalRotation = -80f;
+        float maxVerticalRotation = 80f;
+
+        // Clamp mouseY to the specified range
+        mouseY = Mathf.Clamp(mouseY, minVerticalRotation, maxVerticalRotation);
+
+        // Rotate the camera using the clamped mouseY value
+        m_cameraTransform.localRotation *= Quaternion.Euler(Vector3.left * mouseY);
     }
+
+
 
 
     void HandleInteract()

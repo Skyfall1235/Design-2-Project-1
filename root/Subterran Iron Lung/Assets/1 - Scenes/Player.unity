@@ -298,16 +298,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2505452351680374883, guid: c47c1066b65e89e498cfd7cee4002a4d,
-        type: 3}
-      propertyPath: m_TagString
-      value: Drill
-      objectReference: {fileID: 0}
-    - target: {fileID: 2830150357400024946, guid: c47c1066b65e89e498cfd7cee4002a4d,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 4743823257300413679, guid: c47c1066b65e89e498cfd7cee4002a4d,
         type: 3}
       propertyPath: m_AnchorMax.y

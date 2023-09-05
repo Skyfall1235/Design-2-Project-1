@@ -34,11 +34,9 @@ public class CenterConsole : MonoBehaviour
     {
         m_topOfMap = GameObject.FindWithTag("TopOfMap");
     }
-    void Update()
+    void FixedUpdate()
     {
         UpdateMonitors();
-         
-        
     }
 
     /// <summary>
@@ -47,6 +45,7 @@ public class CenterConsole : MonoBehaviour
     void UpdateMonitors()
     {
         UpdateMonitorOne();
+        DetermineRenderTextureUse();
     }
 
 
@@ -79,6 +78,8 @@ public class CenterConsole : MonoBehaviour
     /// </summary>
     private const int m_maxLinesOnConsole = 6;
 
+
+    string preppedText;
     /// <summary>
     /// Adds a new text line to the console log.
     /// </summary>
@@ -86,7 +87,7 @@ public class CenterConsole : MonoBehaviour
     public void AddTextToConsole(string text)
     {
         // Prep text
-        string preppedText = $"\n{text}";
+        preppedText = $"\n{text}";
 
         // Add text to line
         m_consoleLogs.Add(preppedText);
@@ -102,6 +103,10 @@ public class CenterConsole : MonoBehaviour
 
     #region Update Monitors
 
+    string direction;
+    float elevation;
+    string assembly;
+
     /// <summary>
     /// Updates the information diplayed on monitor one
     /// </summary>
@@ -109,11 +114,28 @@ public class CenterConsole : MonoBehaviour
     {
         //handles  energy, engine rpm,elevation, and direction
         //use the groundplane for this
-        string direction = GetDirection();
-        float elevation = -ElevationCalc();
+        direction = GetDirection();
+        elevation = -ElevationCalc();
 
-        string assembly = $"Elevation - {elevation - 12000} \n Direction - {direction} \n energy Consumption - N/A \n \n Engine RPM - N/A";
+        assembly = $"Elevation - {elevation - 12000} \n Direction - {direction} \n energy Consumption - N/A \n \n Engine RPM - N/A";
         m_screen1TMP_GUI.text = assembly;
+    }
+
+
+    void DetermineRenderTextureUse()
+    {
+        // Check if the Render Texture's position is within the camera's view.
+        Vector3 viewportPoint = Camera.main.WorldToViewportPoint(transform.position);
+
+        // If the viewport point is outside the camera's view, turn off the Render Texture.
+        if (viewportPoint.x < 0f || viewportPoint.x > 1f || viewportPoint.y < 0f || viewportPoint.y > 1f)
+        {
+            m_console[1].SetActive(false);
+        }
+        else
+        {
+            m_console[1].SetActive(true);
+        }
     }
 
     #endregion
