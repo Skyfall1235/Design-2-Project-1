@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class ShipManager : MonoBehaviour, IInteractable
 {
     [SerializeField] private InteractableType m_interactableType; // The type of interactable object that this is connected to
+
     /// <summary>
     /// Gets or sets the type of this interactable object.
     /// </summary>
@@ -26,12 +27,15 @@ public class ShipManager : MonoBehaviour, IInteractable
     [SerializeField] Light[] m_consoleLight;
 
     [Header("Objectives")]
+    [SerializeField] private GameObject m_player;
+    [SerializeField] private GameObject m_controlScheme;
+
     public Objective m_currentObjective;
     public ObjectiveTask m_currentTask;
-    [SerializeField] List<Objective> m_missionObjectives;
-    [SerializeField] GameObject m_controlScheme;
-    [SerializeField] GameObject m_player;
-    public bool m_showControls;
+    [SerializeField] private List<Objective> m_missionObjectives;
+
+    [Header("Ship States")]
+    [SerializeField] private bool m_showControls;
     [SerializeField] private bool m_lightIsFlashing = false;
 
     //[Header("Audio settings and References")]

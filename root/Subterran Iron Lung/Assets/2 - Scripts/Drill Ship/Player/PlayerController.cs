@@ -10,6 +10,7 @@ using UnityEngine.Analytics;
 public class PlayerController : MonoBehaviour
 {
     #region member variables
+
     /// <summary>
     /// The speed at which the player moves.
     /// </summary>
@@ -46,9 +47,11 @@ public class PlayerController : MonoBehaviour
     private Transform m_cameraTransform;
 
     /// <summary>
-    /// 
+    /// the selected key for interaction
     /// </summary>
     [SerializeField] private KeyCode m_interactKey;
+
+    [SerializeField] private AudioSource m_audioSource;
 
     [SerializeField] private TextMeshProUGUI playerInteractionPrompt;
     [SerializeField] float m_maxRaycastRange;
@@ -57,6 +60,7 @@ public class PlayerController : MonoBehaviour
     /// reference to the ships manager script
     /// </summary>
     private ShipManager m_shipManager;
+
 
 
     public bool useControls;
@@ -158,6 +162,7 @@ public class PlayerController : MonoBehaviour
 
     void ClosePauseMenu()
     {
+        //GlobalMethods.PlaySoundAtLocation(SoundType.SoundEffect, "MessagePing", 1, , 0.5);
         pauseMenuPanel.SetActive(false);
         useControls = true;
 

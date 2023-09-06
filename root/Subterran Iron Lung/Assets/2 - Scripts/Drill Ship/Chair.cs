@@ -34,6 +34,7 @@ public class Chair : BaseInteractactable
     }
     public override void Interact()
     {
+
         base.Interact();
         //set the players tranform to equal the chair
         m_playerController.transform.position = playerSittingLocation.transform.position;

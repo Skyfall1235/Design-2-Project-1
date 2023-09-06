@@ -26,7 +26,8 @@ public class CenterConsole : MonoBehaviour
     [SerializeField] private GameObject m_canvas; // Reference to the canvas GameObject for Screen 3.
     [SerializeField] private GameObject[] m_EventsPanels = new GameObject[4];
     [SerializeField] private TextMeshProUGUI m_consoleLog;
-    [SerializeField] private EventTriggerType m_shipsCurrentEvent
+    [SerializeField]
+    private EventTriggerType m_shipsCurrentEvent
     {
         get { return m_shipManager.m_currentEvent; }
     }
