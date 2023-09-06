@@ -68,11 +68,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39a6e7f36c66dd24583c3c00ae37ef7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drillMovement: {fileID: 0}
-  playerController: {fileID: 0}
-  shipManager: {fileID: 0}
+  m_drillMovement: {fileID: 0}
+  m_playerController: {fileID: 0}
+  m_shipManager: {fileID: 0}
+  m_interactableType: 0
   playerSittingLocation: {fileID: 6913618212491693926}
-  interactableType: 2
 --- !u!1 &6913618212491693926
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +130,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d466e2eae95ed804f85f00b0924ee018,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.008850098
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d466e2eae95ed804f85f00b0924ee018,
         type: 3}
@@ -140,7 +140,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d466e2eae95ed804f85f00b0924ee018,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.763
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d466e2eae95ed804f85f00b0924ee018,
         type: 3}

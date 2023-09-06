@@ -49,7 +49,14 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// the selected key for interaction
     /// </summary>
-    [SerializeField] private KeyCode m_interactKey;
+    [SerializeField]
+    private KeyCode m_interactKey;
+
+    public KeyCode InteractKey
+    {
+        get { return m_interactKey; }
+    }
+
 
     [SerializeField] private AudioSource m_audioSource;
 
@@ -59,7 +66,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// reference to the ships manager script
     /// </summary>
-    private ShipManager m_shipManager;
+    [SerializeField] private ShipManager m_shipManager;
 
 
 
@@ -160,14 +167,19 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void ClosePauseMenu()
+    public void ClosePauseMenu()
     {
-        //GlobalMethods.PlaySoundAtLocation(SoundType.SoundEffect, "MessagePing", 1, , 0.5);
         pauseMenuPanel.SetActive(false);
         useControls = true;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public void ReturnToMenu()
+    {
+        Debug.Log(m_shipManager.m_loader);
+        m_shipManager.m_loader.LoadSceneWithFade(m_shipManager.m_loader.sceneNames[1].sceneName, false);
     }
 
 
@@ -194,6 +206,11 @@ public class PlayerController : MonoBehaviour
         // Rotate the camera using the clamped mouseY value
         m_cameraTransform.localRotation *= Quaternion.Euler(Vector3.left * mouseY);
     }
+
+
+
+
+
 
 
 

@@ -175,7 +175,7 @@ public class CenterConsole : MonoBehaviour
                 // Handle Console Warning event
                 ToggleGameObjects(m_EventsPanels, false);
                 m_EventsPanels[0].SetActive(true);
-                AddTextToConsole("unknown event, proceed with cuation");
+                AddTextToConsole("unknown event, proceed with caution");
                 return false;
 
             case EventTriggerType.Rumble:

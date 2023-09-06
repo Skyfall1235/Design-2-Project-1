@@ -72,6 +72,12 @@ public class AsyncLoader : MonoBehaviour
         StartCoroutine(LoadMainMenuAsync());
     }
 
+    public void ReturnToMenu()
+    {
+        StartCoroutine(LoadMainMenuAsync());
+
+    }
+
     private IEnumerator LoadMainMenuAsync()
     {
         // Load the main menu scene additively
@@ -163,7 +169,8 @@ public class AsyncLoader : MonoBehaviour
             {
                 yield return null;
             }
-
+            GameObject drillShip = GameObject.Find("DrillShip");
+            drillShip.GetComponent<ShipManager>().m_loader = this;
         }
         
         // Set the new scene as the active scene

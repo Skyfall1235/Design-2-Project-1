@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,11 +26,13 @@ public class ShipManager : MonoBehaviour, IInteractable
 
     [SerializeField] CenterConsole m_console;
     [SerializeField] Light[] m_consoleLight;
+    public AsyncLoader m_loader;
 
     [Header("Objectives")]
     [SerializeField] private GameObject m_player;
     [SerializeField] private GameObject m_controlScheme;
 
+    [SerializeField] private TextMeshProUGUI m_taskText;
     public Objective m_currentObjective;
     public ObjectiveTask m_currentTask;
     [SerializeField] private List<Objective> m_missionObjectives;
@@ -45,6 +48,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     // Start is called before the first frame update
     void Start()
     {
+        
         SetupTasks();
         AssignNextObjectiveAndTask();
         DebugTask(m_currentTask);
@@ -140,6 +144,10 @@ public class ShipManager : MonoBehaviour, IInteractable
                 break;
             case 1:
                 //ship reactor problem
+                m_currentEvent = EventTriggerType.ReactorMalfunction;
+                StartCountdown(timeOutForEvent);
+                m_lightIsFlashing = true;
+                StartCoroutine(AlternateLights());
                 break;
             default:
                 break;
@@ -217,13 +225,23 @@ public class ShipManager : MonoBehaviour, IInteractable
             for (int index = 0; index < objective.objectiveTasks.Count; index++)
             {
                 ObjectiveTask task = objective.objectiveTasks[index];
-                task.targetLocation = task.interactableObject.transform.position;
 
-                // If you want to update the modified task back into the list, you would do something like this:
-                objective.objectiveTasks[index] = task;
+                if (task.interactableObject != null)
+                {
+                    task.targetLocation = task.interactableObject.transform.position;
+
+                    // If you want to update the modified task back into the list, you would do something like this:
+                    objective.objectiveTasks[index] = task;
+                }
+                else
+                {
+                    Debug.LogWarning("InteractableObject is null for ObjectiveTask at index " + index);
+                    // Handle the case where the interactableObject is null, e.g., skip the task or log a warning.
+                }
             }
         }
     }
+
 
     void DebugTask(ObjectiveTask task)
     {
@@ -234,6 +252,28 @@ public class ShipManager : MonoBehaviour, IInteractable
             $" Interactable Object: {task.interactableObject} \n" +
             $" Target Location: {task.targetLocation} \n" +
             $" Task Completed: {task.taskCompleted}");
+    }
+
+    void UpdateTaskText()
+    {
+        if (m_taskText != null)
+        {
+            if (m_currentObjective.Equals(default(Objective)) || m_currentTask.Equals(default(ObjectiveTask)))
+            {
+                // Handle the case where m_currentObjective or m_currentTask is the default value
+                m_taskText.text = "No available objectives or tasks.";
+            }
+            else
+            {
+                // Construct the task text with relevant information
+                string taskInfo = $"Objective: {m_currentObjective.objectiveDescription}\n\n" +
+                    $"Current task: {m_currentTask.objectiveObjectName}\n\n" +
+                    $"Completion Status: {(m_currentTask.taskCompleted ? "Completed" : "Incomplete")}";
+
+                // Set the task text in your TextMeshPro component
+                m_taskText.text = taskInfo;
+            }
+        }
     }
 
     private void AssignNextObjectiveAndTask()
@@ -248,6 +288,7 @@ public class ShipManager : MonoBehaviour, IInteractable
                     if (!task.taskCompleted)
                     {
                         m_currentTask = task;
+                        UpdateTaskText();
                         Debug.Log($"Assigned Objective: {m_currentObjective.objectiveDescription}");
                         Debug.Log($"Assigned task object: {m_currentTask.objectiveObjectName}");
                         return; // Exit the loop once a task is assigned

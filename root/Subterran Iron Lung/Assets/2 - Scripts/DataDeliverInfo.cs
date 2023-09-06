@@ -23,13 +23,13 @@ public interface IInteractable
 
 public static class GlobalMethods
 {
-    public static void PlaySoundAtLocation(SoundType type, string soundName, int indexLocation, AudioSource source, float rawVolume)
+    public static void PlaySoundAtLocation(SoundType type, string soundCollectionName, int indexLocation, AudioSource source, float rawVolume)
     {
         SoundManager soundManager = FindSoundManager();
         if (soundManager != null)
         {
             // Call the PlaySoundAtLocation method on the SoundManager component
-            soundManager.PlaySoundAtLocation(type, soundName, indexLocation, source, rawVolume);
+            soundManager.PlaySoundAtLocation(type, soundCollectionName, indexLocation, source, rawVolume);
         }
         else
         {
@@ -41,7 +41,7 @@ public static class GlobalMethods
     private static SoundManager FindSoundManager()
     {
         // Find the GameManager object in the scene
-        GameObject gameManager = GameObject.Find("GameManager");
+        GameObject gameManager = GameObject.Find("Scene Manager");
 
         if (gameManager != null)
         {
@@ -53,13 +53,13 @@ public static class GlobalMethods
             catch (Exception ex)
             {
                 //i think i nedd to use a try/catch here?
-                Debug.LogError("Could not find SoundManager component on GameManager." + ex.Message + " StackTrace: " + ex.StackTrace);
+                Debug.LogError("Could not find SoundManager component on Scene Manager." + ex.Message + " StackTrace: " + ex.StackTrace);
                 return null;
             }
         }
         else
         {
-            Debug.LogWarning("Could not find GameManager object in scene.");
+            Debug.LogWarning("Could not find Scene Manager object in scene.");
             return null;
         }
     }

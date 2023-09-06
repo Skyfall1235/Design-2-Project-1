@@ -36,20 +36,20 @@ public class SoundManager : MonoBehaviour
     /// <param name="indexLocation">The index of the sound at the location.</param>
     /// <param name="source">The AudioSource to play the sound.</param>
     /// <param name="rawVolume">The raw volume of the sound.</param>
-    public void PlaySoundAtLocation(SoundType type, string soundName, int indexLocation, AudioSource source, float rawVolume)
+    public void PlaySoundAtLocation(SoundType type, string soundCollectionName, int indexLocation, AudioSource source, float rawVolume)
     {
         float volume = TrueVolume(rawVolume, type);
         AudioClip chosenSound;
 
-        if (audioFiles.sound.TryGetValue(soundName, out Sounds chosenStruct))
+        if (audioFiles.sound.TryGetValue(soundCollectionName, out Sounds chosenStruct))
         {
             chosenSound = chosenStruct.soundFile[indexLocation];
             source.PlayOneShot(chosenSound, volume);
-            Debug.Log($"Sound {soundName} played successfully");
+            Debug.Log($"Sound {soundCollectionName} played successfully");
         }
         else
         {
-            Debug.LogWarning($"Sound {soundName} was not found in the 'sounds' dictionary.");
+            Debug.LogWarning($"Sound {soundCollectionName} was not found in the 'sounds' dictionary.");
         }
     }
 
