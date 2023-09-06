@@ -61,11 +61,14 @@ public class PlayerController : MonoBehaviour
 
     public bool useControls;
 
+    [SerializeField] GameObject pauseMenuPanel;
+
     #endregion
-    
+
     private void Start()
     {
         StartAssembly();
+
     }
 
     private void Update()
@@ -89,7 +92,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         AssembleControls();
-        
+
     }
 
 
@@ -107,7 +110,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void AssembleControls()
     {
-        if(useControls)
+        if (useControls)
         {
             Cursor.lockState = CursorLockMode.Locked;
             HandleKeyboardInput();
@@ -116,7 +119,7 @@ public class PlayerController : MonoBehaviour
 
             PromptUIForInteraction();
         }
-        
+
     }
 
     /// <summary>
@@ -128,11 +131,11 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 move = transform.right * horizontalInput + transform.forward * verticalInput;
-        
+
         //Debug.Log(m_characterController.velocity);
         //Debug.Log(m_characterController.velocity.magnitude);
 
-        if(m_characterController.enabled)
+        if (m_characterController.enabled)
         {
             m_characterController.Move(move * m_moveSpeed * Time.deltaTime);
             // Jumping
@@ -141,7 +144,27 @@ public class PlayerController : MonoBehaviour
                 m_playerVelocity.y = Mathf.Sqrt(m_jumpHeight * -2.0f * m_gravity);
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //set the controller to off and toggle on the pause menu
+            pauseMenuPanel.SetActive(true);
+            useControls = false;
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
     }
+
+    void ClosePauseMenu()
+    {
+        pauseMenuPanel.SetActive(false);
+        useControls = true;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
 
 
     /// <summary>
