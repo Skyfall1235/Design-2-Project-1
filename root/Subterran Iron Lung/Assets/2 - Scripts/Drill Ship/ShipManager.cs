@@ -57,7 +57,7 @@ public class ShipManager : MonoBehaviour, IInteractable
         }
 
         //DEBUG
-        StartCoroutine(AlternateLights());
+        //StartCoroutine(AlternateLights());
     }
 
 

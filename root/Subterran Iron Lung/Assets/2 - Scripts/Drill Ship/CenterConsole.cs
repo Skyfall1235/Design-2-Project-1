@@ -58,7 +58,7 @@ public class CenterConsole : MonoBehaviour
     void UpdateMonitors()
     {
         UpdateMonitorOne();
-        DetermineRenderTextureUse();
+        //DetermineRenderTextureUse();
     }
 
     #region public methods

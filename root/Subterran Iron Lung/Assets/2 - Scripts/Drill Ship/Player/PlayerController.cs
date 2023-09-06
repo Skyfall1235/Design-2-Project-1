@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour
                 // If the interface is implemented, call the Interact method
                 if (interactable.InteractableType == InteractableType.Console)
                 {
-
+                    interactable.Interact(m_shipManager);
                 }
                 else if (interactable.InteractableType == InteractableType.Button)
                 {
