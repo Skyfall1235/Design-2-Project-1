@@ -75,7 +75,6 @@ public class AsyncLoader : MonoBehaviour
     public void ReturnToMenu()
     {
         StartCoroutine(LoadMainMenuAsync());
-
     }
 
     private IEnumerator LoadMainMenuAsync()
