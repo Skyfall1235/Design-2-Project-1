@@ -149,11 +149,6 @@ public class PlayerController : MonoBehaviour
         if (m_characterController.enabled)
         {
             m_characterController.Move(move * m_moveSpeed * Time.deltaTime);
-            // Jumping
-            if (m_isGrounded && Input.GetButtonDown("Jump"))
-            {
-                m_playerVelocity.y = Mathf.Sqrt(m_jumpHeight * -2.0f * m_gravity);
-            }
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -182,37 +177,24 @@ public class PlayerController : MonoBehaviour
         m_shipManager.m_loader.LoadSceneWithFade(m_shipManager.m_loader.sceneNames[1].sceneName, false);
     }
 
-
+    public float mouseSensitivity;
+    float xRotation = 0f;
 
     /// <summary>
     /// Handles camera rotation based on mouse input.
     /// </summary>
     void HandleMouseInput()
     {
-        // Rotate the player based on camera rotation
-        float mouseX = Input.GetAxis("Mouse X");
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        xRotation -= mouseY;
+        //ensures the X rotation cannot be higher than 90 degrees up or straight down
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        //does the roation
+        m_cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
-
-        // Rotate the camera based on mouse input (looking up and down)
-        float mouseY = Input.GetAxis("Mouse Y");
-
-        // Define the clamping angles to prevent flipping
-        float minVerticalRotation = -80f;
-        float maxVerticalRotation = 80f;
-
-        // Clamp mouseY to the specified range
-        mouseY = Mathf.Clamp(mouseY, minVerticalRotation, maxVerticalRotation);
-
-        // Rotate the camera using the clamped mouseY value
-        m_cameraTransform.localRotation *= Quaternion.Euler(Vector3.left * mouseY);
     }
-
-
-
-
-
-
-
 
 
     void HandleInteract()

@@ -40,6 +40,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     [Header("Ship States")]
     [SerializeField] private bool m_showControls;
     [SerializeField] private bool m_lightIsFlashing = false;
+    [SerializeField] private AudioSource m_consoleSource;
 
     //[Header("Audio settings and References")]
 
@@ -64,6 +65,7 @@ public class ShipManager : MonoBehaviour, IInteractable
             m_player.GetComponent<PlayerController>().useControls = false;
         }
 
+        StartCoroutine(RandomTimerCoroutine());
         //DEBUG
         //StartCoroutine(AlternateLights());
     }
@@ -87,7 +89,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     private IEnumerator AlternateLights()
     {
         const float interval = 1.0f;
-
+        GlobalMethods.PlaySoundAtLocation(SoundType.SoundEffect, "Warnings", 0, m_consoleSource, 0.7f);
         //preload the alteration
         m_consoleLight[0].enabled = true;
         m_consoleLight[2].enabled = true;
@@ -110,7 +112,20 @@ public class ShipManager : MonoBehaviour, IInteractable
     }
 
 
-    //DEBUG
+    private IEnumerator RandomTimerCoroutine()
+    {
+        while (true)
+        {
+            // Generate a random waiting time between 1 and 5 seconds (adjust the range as needed).
+            float randomWaitTime = Random.Range(15f, 45f);
+
+            // Wait for the random time.
+            yield return new WaitForSeconds(randomWaitTime);
+
+            // Call the specified method.
+            DetermineShipProblem();
+        }
+    }
 
     /// <summary>
     /// Checks if the current event is the same as before. if not, sets the new event to the current and calls an update to the monitor

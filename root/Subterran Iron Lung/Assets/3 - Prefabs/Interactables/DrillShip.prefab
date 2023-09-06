@@ -7309,6 +7309,11 @@ PrefabInstance:
       propertyPath: m_shipManager
       value: 
       objectReference: {fileID: 1592294551206449244}
+    - target: {fileID: 6704880798881579672, guid: d1723260d57303644a4aa0446400a238,
+        type: 3}
+      propertyPath: mouseSensitivity
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 7517894233676180690, guid: d1723260d57303644a4aa0446400a238,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
