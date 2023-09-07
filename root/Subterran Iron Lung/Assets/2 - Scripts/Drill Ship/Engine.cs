@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Engine : BaseInteractactable
 {
-    [SerializeField] bool m_hasEngineProblem = false;
+    [SerializeField] public bool m_hasEngineProblem = false;
 
     [SerializeField] AudioSource m_audioSource;
     // steam animation
@@ -50,7 +50,9 @@ public class Engine : BaseInteractactable
             yield return null;
         }
 
+        Debug.Log("calls the stop event");
         // Key has been held for the specified duration, complete the action
+        m_hasEngineProblem = false;
         StopEvent();
     }
 

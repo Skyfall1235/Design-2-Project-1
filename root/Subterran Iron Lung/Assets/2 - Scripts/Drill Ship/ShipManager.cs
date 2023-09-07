@@ -25,6 +25,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     [SerializeField] private Coroutine m_countdownCoroutine;
 
     [SerializeField] CenterConsole m_console;
+    [SerializeField] private Engine m_engine;
     [SerializeField] Light[] m_consoleLight;
     public AsyncLoader m_loader;
 
@@ -107,6 +108,7 @@ public class ShipManager : MonoBehaviour, IInteractable
         for (int i = 0; i < m_consoleLight.Length; i++)
         {
             m_consoleLight[i].enabled = false;
+            m_consoleSource.Stop();
         }
 
     }
@@ -116,8 +118,11 @@ public class ShipManager : MonoBehaviour, IInteractable
     {
         while (true)
         {
+            
             // Generate a random waiting time between 1 and 5 seconds (adjust the range as needed).
             float randomWaitTime = Random.Range(15f, 45f);
+
+            Debug.Log(randomWaitTime);
 
             // Wait for the random time.
             yield return new WaitForSeconds(randomWaitTime);
@@ -153,6 +158,7 @@ public class ShipManager : MonoBehaviour, IInteractable
             case 0:
                 //ship engine problem
                 m_currentEvent = EventTriggerType.EngineMalfunction;
+                m_engine.m_hasEngineProblem = true;
                 StartCountdown(timeOutForEvent);
                 m_lightIsFlashing = true;
                 StartCoroutine(AlternateLights());
@@ -187,6 +193,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     // Cancel the countdown
     public void CancelCountdown()
     {
+        Debug.Log("canceled countdown");
         // Stop the countdown coroutine if it's running
         if (m_countdownCoroutine != null)
         {
@@ -194,6 +201,7 @@ public class ShipManager : MonoBehaviour, IInteractable
             m_countdownCoroutine = null;
             //this method will reset the events
             DetectChange(EventTriggerType.None);
+            m_lightIsFlashing = false;
         }
     }
 
