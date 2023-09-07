@@ -1884,7 +1884,7 @@ MonoBehaviour:
   m_drillMovement: {fileID: 0}
   m_playerController: {fileID: 0}
   m_shipManager: {fileID: 0}
-  m_interactableType: 2
+  m_interactableType: 0
   m_hasEngineProblem: 0
   m_audioSource: {fileID: 507309202117504056}
   m_holdDuration: 2
