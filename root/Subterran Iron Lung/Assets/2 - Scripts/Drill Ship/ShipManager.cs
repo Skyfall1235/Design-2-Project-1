@@ -228,6 +228,12 @@ public class ShipManager : MonoBehaviour, IInteractable
     }
 
 
+    public void ReturnToMenu()
+    {
+        Debug.Log(m_loader);
+        m_loader.LoadSceneWithFade(m_loader.sceneNames[1].sceneName, false);
+    }
+
     #endregion
 
 
