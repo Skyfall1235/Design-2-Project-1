@@ -70,6 +70,7 @@ public class CenterConsole : MonoBehaviour
     /// <remarks>This should be called through the ship manager, when events occur instead of just being an update thing</remarks>
     public void UpdateMonitorThree()
     {
+        Debug.Log("made it to the update call");
         //if the console doesnt have a warning, show the logs for the data
         if (DetermineConsoleOutput(m_shipsCurrentEvent))
         {

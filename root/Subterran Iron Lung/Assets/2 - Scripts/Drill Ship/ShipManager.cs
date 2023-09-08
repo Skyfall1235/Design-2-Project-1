@@ -138,6 +138,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     /// <param name="newEvent">The event we would like to pass to the ship problem handler  </param>
     private void DetectChange(EventTriggerType newEvent)
     {
+        Debug.Log($" current event:{m_currentEvent}  New Event: {newEvent}");
         if (newEvent != m_currentEvent)
         {
             m_currentEvent = newEvent;
@@ -151,22 +152,20 @@ public class ShipManager : MonoBehaviour, IInteractable
     int timeOutForEvent;
     private void DetermineShipProblem()
     {
-        choice = Random.Range(0, 3);
+        choice = 0;
         timeOutForEvent = Random.Range(10, 26);
         switch (choice)
         {
             case 0:
                 //ship engine problem
-                m_currentEvent = EventTriggerType.EngineMalfunction;
                 m_engine.m_hasEngineProblem = true;
-                StartCountdown(timeOutForEvent);
+                StartCountdown(timeOutForEvent, EventTriggerType.EngineMalfunction);
                 m_lightIsFlashing = true;
                 StartCoroutine(AlternateLights());
                 break;
             case 1:
                 //ship reactor problem
-                m_currentEvent = EventTriggerType.ReactorMalfunction;
-                StartCountdown(timeOutForEvent);
+                StartCountdown(timeOutForEvent, EventTriggerType.ReactorMalfunction);
                 m_lightIsFlashing = true;
                 StartCoroutine(AlternateLights());
                 break;
@@ -178,16 +177,19 @@ public class ShipManager : MonoBehaviour, IInteractable
 
 
     #region Countdown Handlers
-    public void StartCountdown(float duration)
+    public void StartCountdown(float duration, EventTriggerType type)
     {
+        DetectChange(type);
         // Stop any existing countdown coroutine.
         if (m_countdownCoroutine != null)
         {
             StopCoroutine(m_countdownCoroutine);
         }
-
+        Debug.Log("starts the blinking lights");
+        
         // Start a new countdown coroutine.
         m_countdownCoroutine = StartCoroutine(CountdownCoroutine(duration));
+        
     }
 
     // Cancel the countdown

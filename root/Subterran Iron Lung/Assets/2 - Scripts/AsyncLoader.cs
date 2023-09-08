@@ -93,6 +93,8 @@ public class AsyncLoader : MonoBehaviour
 
         if (mainMenuScene.isLoaded)
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             // Find the Canvas within the loaded main menu scene
             MainMenuUI canvasInMainMenu = null;
             GameObject[] rootObjects = mainMenuScene.GetRootGameObjects();
