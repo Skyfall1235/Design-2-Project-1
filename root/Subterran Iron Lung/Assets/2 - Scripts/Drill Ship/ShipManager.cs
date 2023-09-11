@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,6 +33,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     [Header("Objectives")]
     [SerializeField] private GameObject m_player;
     [SerializeField] private GameObject m_controlScheme;
+    [SerializeField] TextMeshProUGUI m_countdownInteractionText;
 
     [SerializeField] private TextMeshProUGUI m_taskText;
     public Objective m_currentObjective;
@@ -42,6 +44,9 @@ public class ShipManager : MonoBehaviour, IInteractable
     [SerializeField] private bool m_showControls;
     [SerializeField] private bool m_lightIsFlashing = false;
     [SerializeField] private AudioSource m_consoleSource;
+    [SerializeField]
+    [Range(0.0f, 10.0f)]
+    int lengthOfProblemDuration = 15;
 
     //[Header("Audio settings and References")]
 
@@ -50,6 +55,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     // Start is called before the first frame update
     void Start()
     {
+        m_missionObjectives = FindShipManagerInPlayerScene().m_missionObjectives;
         
         SetupTasks();
         AssignNextObjectiveAndTask();
@@ -71,6 +77,36 @@ public class ShipManager : MonoBehaviour, IInteractable
         //StartCoroutine(AlternateLights());
     }
 
+    public Objectives_loader FindShipManagerInPlayerScene()
+    {
+        // Loop through all active scenes
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene scene = SceneManager.GetSceneAt(i);
+
+            // Check if the scene is named "Player"
+            if (scene.name == "Level_1")
+            {
+                // Find the ShipManager component in the "Player" scene
+                GameObject[] rootObjects = scene.GetRootGameObjects();
+                foreach (GameObject obj in rootObjects)
+                {
+                    Objectives_loader loader = obj.GetComponent<Objectives_loader>();
+                    if (loader != null)
+                    {
+                        // ShipManager found, return it
+                        return loader;
+                    }
+                }
+            }
+        }
+
+        // If no "Player" scene or ShipManager is found, return null
+        return null;
+    }
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -84,7 +120,11 @@ public class ShipManager : MonoBehaviour, IInteractable
 
     }
 
- 
+    public void CompleteCurrentTaskInObjective()
+    {
+        m_currentTask.taskCompleted = true;
+        AssignNextObjectiveAndTask();
+    }
 
 
     private IEnumerator AlternateLights()
@@ -153,7 +193,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     private void DetermineShipProblem()
     {
         choice = 0;
-        timeOutForEvent = Random.Range(10, 26);
+        timeOutForEvent = Random.Range(lengthOfProblemDuration, lengthOfProblemDuration+25);
         switch (choice)
         {
             case 0:
@@ -301,13 +341,23 @@ public class ShipManager : MonoBehaviour, IInteractable
         }
     }
 
+    //to go to next objective, we just need to flip the completed bool
+    private int currentObjectiveIndex = 0;
+
+    /// <summary>
+    /// Assigns the next available Objective and Task.
+    /// </summary>
     private void AssignNextObjectiveAndTask()
     {
-        foreach (Objective objective in m_missionObjectives)
+        while (currentObjectiveIndex < m_missionObjectives.Count)
         {
+            Objective objective = m_missionObjectives[currentObjectiveIndex];
+
             if (!objective.objectiveCompleted)
             {
                 m_currentObjective = objective;
+                bool allTasksCompleted = true; // Assume all tasks are completed initially
+
                 foreach (ObjectiveTask task in objective.objectiveTasks)
                 {
                     if (!task.taskCompleted)
@@ -318,7 +368,23 @@ public class ShipManager : MonoBehaviour, IInteractable
                         Debug.Log($"Assigned task object: {m_currentTask.objectiveObjectName}");
                         return; // Exit the loop once a task is assigned
                     }
+                    else
+                    {
+                        allTasksCompleted = false; // At least one task is not completed
+                    }
                 }
+
+                // Check if all tasks within the objective are completed
+                if (allTasksCompleted)
+                {
+                    m_currentObjective.objectiveCompleted = true; // Mark the objective as completed
+                    Debug.Log($"Objective completed: {m_currentObjective.objectiveDescription}");
+                    currentObjectiveIndex++; // Move to the next objective
+                }
+            }
+            else
+            {
+                currentObjectiveIndex++; // Move to the next objective if the current one is already completed
             }
         }
 
@@ -326,19 +392,74 @@ public class ShipManager : MonoBehaviour, IInteractable
         Debug.Log("No available objectives or tasks.");
     }
 
+
+
+
+    bool isInteracting = false;
+
+    /// <summary>
+    /// Initiates a countdown for a specific interaction type.
+    /// </summary>
+    /// <param name="time">The duration of the countdown in seconds.</param>
+    /// <param name="type">The type of interaction (e.g., drilling).</param>
+    /// <returns>An IEnumerator for managing the countdown.</returns>
+    public IEnumerator DrillActionCountdown(float time, InteractableType type)
+    {
+        float currentTimeOnDrillActionCountdown = time;
+        while (currentTimeOnDrillActionCountdown > 0)
+        {
+            isInteracting = true;
+            yield return new WaitForSeconds(1.0f); // Wait for one second
+            currentTimeOnDrillActionCountdown -= 1.0f;
+            UpdateCountdownText(currentTimeOnDrillActionCountdown, type);
+        }
+        isInteracting = false;
+        UpdateCountdownText(currentTimeOnDrillActionCountdown, type);
+        // Countdown completed
+        Debug.Log("Countdown completed!");
+        currentTimeOnDrillActionCountdown = 0f;
+        m_currentTask.taskCompleted = true;
+        CompleteCurrentTaskInObjective();
+    }
+
+
+    /// <summary>
+    /// Updates the countdown interaction text based on the remaining time.
+    /// </summary>
+    /// <param name="time">The remaining time in seconds.</param>
+    /// <param name="type">The type of interaction (e.g., drilling).</param>
+    private void UpdateCountdownText(float time, InteractableType type)
+    {
+        Debug.Log("updating interaction countdown");
+        if (m_countdownInteractionText != null)
+        {
+            if(isInteracting)
+            {
+                string timeRemaining = time.ToString("F1");
+                string typeOfInteraction = type.ToString();
+                m_countdownInteractionText.text = $"Processing {typeOfInteraction}\nRemaining time:\nT-{timeRemaining} seconds"; // Display time with one decimal place
+            }
+            else
+            {
+                m_countdownInteractionText.text = $"";
+            }
+        }
+    }
+
+
     #endregion
 
 
     #region interaction calls
     void IInteractable.Interact(ShipManager manager)
     {
-
+        
     }
 
     void IInteractable.Interact(ShipManager manager, ManagerToObjectivePacket dataPacket)
     {
         //datapacket tells the object to update certain things like its mesh
-
+        StartCoroutine(DrillActionCountdown(dataPacket.timeRequiredForInteraction, dataPacket.interactableType));
     }
     #endregion
 

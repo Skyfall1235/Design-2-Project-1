@@ -140,6 +140,13 @@ public class CenterConsole : MonoBehaviour
         }
     }
 
+
+    //for the text on the 2nd monitor
+    public void DisplayCollectionProcess()
+    {
+
+    }
+
     #endregion
 
 

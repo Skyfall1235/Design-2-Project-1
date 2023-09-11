@@ -154,14 +154,6 @@ public class AsyncLoader : MonoBehaviour
         // Unload all scenes except for the Persistent Scene (if needed)
         UnloadAllScenesExceptPersistent();
 
-        // Load the new scene asynchronously
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-
         if(includePlayer)
         {
             AsyncOperation playerLoad = SceneManager.LoadSceneAsync(sceneNames[0].sceneName, LoadSceneMode.Additive);
@@ -173,7 +165,15 @@ public class AsyncLoader : MonoBehaviour
             GameObject drillShip = GameObject.Find("DrillShip");
             drillShip.GetComponent<ShipManager>().m_loader = this;
         }
-        
+
+        // Load the new scene asynchronously
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
         // Set the new scene as the active scene
         Scene loadedScene = SceneManager.GetSceneByName(sceneName);
         SceneManager.SetActiveScene(loadedScene);

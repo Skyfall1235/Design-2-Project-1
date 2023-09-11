@@ -110,6 +110,8 @@ public struct ManagerToObjectivePacket
     /// Indicates if the packet should trigger an objective event.
     /// </summary>
     public bool triggerObjectiveEvent;
+    public float timeRequiredForInteraction;
+    public InteractableType interactableType;
 }
 
 /// <summary>

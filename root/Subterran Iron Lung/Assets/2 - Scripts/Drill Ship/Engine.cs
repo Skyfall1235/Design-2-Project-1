@@ -9,8 +9,11 @@ public class Engine : BaseInteractactable
     [SerializeField] AudioSource m_audioSource;
     // steam animation
 
+    public float interactDistance = 5f; // Adjust this to your desired distance.
+    private bool isInRange = false;
+
     private bool m_isHoldingKey = false;
-    [SerializeField] private float m_holdDuration = 2.0f; // Adjust this to your desired hold time in seconds
+    [SerializeField] private float m_holdDuration = 0.5f; // Adjust this to your desired hold time in seconds
 
     public override void Interact()
     {
@@ -18,21 +21,44 @@ public class Engine : BaseInteractactable
         m_isHoldingKey = false; // Reset the key hold flag when interacting
     }
 
-     void Update()
-     { 
+    void Update()
+    {
+        // Check if the Render Texture's position is within the camera's view.
+        Vector3 viewportPoint = Camera.main.WorldToViewportPoint(transform.position);
 
-        if (Input.GetKey(m_playerController.GetComponent<PlayerController>().InteractKey) && m_hasEngineProblem) // Change to the key you want to hold down
+        // Calculate the direction from the camera to this object.
+        Vector3 directionToPlayer = Camera.main.transform.position - transform.position;
+
+        // Cast a ray to check if the object is in line of sight and within the interact distance.
+        if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, interactDistance))
         {
-            if (!m_isHoldingKey)
+            // Check if the hit object is the player.
+            if (hit.collider.CompareTag("Player"))
             {
-                StartCoroutine(HoldKeyCoroutine());
+                isInRange = true;
+
+                if (Input.GetKey(m_playerController.GetComponent<PlayerController>().InteractKey) && m_hasEngineProblem)
+                {
+                    if (!m_isHoldingKey)
+                    {
+                        StartCoroutine(HoldKeyCoroutine());
+                    }
+                }
+                else
+                {
+                    m_isHoldingKey = false; // Key is released
+                }
+            }
+            else
+            {
+                isInRange = false;
             }
         }
         else
         {
-            m_isHoldingKey = false; // Key is released
+            isInRange = false;
         }
-     }
+    }
 
     IEnumerator HoldKeyCoroutine()
     {
