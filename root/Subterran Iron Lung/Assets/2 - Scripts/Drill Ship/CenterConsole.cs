@@ -83,10 +83,10 @@ public class CenterConsole : MonoBehaviour
 
     string preppedText;
     /// <summary>
-    /// Adds a new text line to the console log.
+    /// Adds a new text line to the console log, and is handled by the determination call below.
     /// </summary>
     /// <param name="text">The text to add to the console log.</param>
-    public void AddTextToConsole(string text)
+    private void AddTextToConsole(string text)
     {
         // Prep text
         preppedText = $"\n{text}";
@@ -140,13 +140,6 @@ public class CenterConsole : MonoBehaviour
         }
     }
 
-
-    //for the text on the 2nd monitor
-    public void DisplayCollectionProcess()
-    {
-
-    }
-
     #endregion
 
 
@@ -195,7 +188,6 @@ public class CenterConsole : MonoBehaviour
 
             case EventTriggerType.SoundTrigger:
                 // Handle Sound Trigger event
-                ToggleGameObjects(m_EventsPanels, false);
                 AddTextToConsole("unknown Lifeform in the vicinity. Proceed with Cuation");
                 m_EventsPanels[0].SetActive(true);
 

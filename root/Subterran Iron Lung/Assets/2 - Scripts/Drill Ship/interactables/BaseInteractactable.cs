@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BaseInteractactable : MonoBehaviour, IInteractable
 {
@@ -56,6 +57,33 @@ public class BaseInteractactable : MonoBehaviour, IInteractable
     protected virtual void StopEvent()
     {
 
+    }
+    public ShipManager FindShipManagerInPlayerScene()
+    {
+        // Loop through all active scenes
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene scene = SceneManager.GetSceneAt(i);
+
+            // Check if the scene is named "Player"
+            if (scene.name == "Player")
+            {
+                // Find the ShipManager component in the "Player" scene
+                GameObject[] rootObjects = scene.GetRootGameObjects();
+                foreach (GameObject obj in rootObjects)
+                {
+                    ShipManager shipManager = obj.GetComponent<ShipManager>();
+                    if (shipManager != null)
+                    {
+                        // ShipManager found, return it
+                        return shipManager;
+                    }
+                }
+            }
+        }
+
+        // If no "Player" scene or ShipManager is found, return null
+        return null;
     }
 
 }

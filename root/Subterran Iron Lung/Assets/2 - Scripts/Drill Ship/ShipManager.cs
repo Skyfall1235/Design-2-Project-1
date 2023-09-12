@@ -25,7 +25,7 @@ public class ShipManager : MonoBehaviour, IInteractable
 
     [SerializeField] private Coroutine m_countdownCoroutine;
 
-    [SerializeField] CenterConsole m_console;
+    [SerializeField] public CenterConsole m_console;
     [SerializeField] private Engine m_engine;
     [SerializeField] Light[] m_consoleLight;
     public AsyncLoader m_loader;
@@ -55,7 +55,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     // Start is called before the first frame update
     void Start()
     {
-        m_missionObjectives = FindShipManagerInPlayerScene().m_missionObjectives;
+        m_missionObjectives = FindObjectivesLoaderInPlayerScene().m_missionObjectives;
         
         SetupTasks();
         AssignNextObjectiveAndTask();
@@ -77,7 +77,7 @@ public class ShipManager : MonoBehaviour, IInteractable
         //StartCoroutine(AlternateLights());
     }
 
-    public Objectives_loader FindShipManagerInPlayerScene()
+    public Objectives_loader FindObjectivesLoaderInPlayerScene()
     {
         // Loop through all active scenes
         for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -176,7 +176,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     /// Checks if the current event is the same as before. if not, sets the new event to the current and calls an update to the monitor
     /// </summary>
     /// <param name="newEvent">The event we would like to pass to the ship problem handler  </param>
-    private void DetectChange(EventTriggerType newEvent)
+    public void DetectChange(EventTriggerType newEvent)
     {
         Debug.Log($" current event:{m_currentEvent}  New Event: {newEvent}");
         if (newEvent != m_currentEvent)
