@@ -34,6 +34,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     [SerializeField] private GameObject m_player;
     [SerializeField] private GameObject m_controlScheme;
     [SerializeField] TextMeshProUGUI m_countdownInteractionText;
+    [SerializeField] private GameObject endPanel;
 
     [SerializeField] private TextMeshProUGUI m_taskText;
     public Objective m_currentObjective;
@@ -45,7 +46,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     [SerializeField] private bool m_lightIsFlashing = false;
     [SerializeField] private AudioSource m_consoleSource;
     [SerializeField]
-    [Range(0.0f, 10.0f)]
+    [Range(0.0f, 100.0f)]
     int lengthOfProblemDuration = 15;
 
     //[Header("Audio settings and References")]
@@ -53,7 +54,7 @@ public class ShipManager : MonoBehaviour, IInteractable
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         m_missionObjectives = FindObjectivesLoaderInPlayerScene().m_missionObjectives;
         
@@ -61,16 +62,12 @@ public class ShipManager : MonoBehaviour, IInteractable
         AssignNextObjectiveAndTask();
         DebugTask(m_currentTask);
 
-        Scene level1Scene = SceneManager.GetSceneByName("Level_1");
-        if (level1Scene.isLoaded)
-        {
-            // "Level_1" scene is open, you can run code in it
-            m_showControls = true;
-            Debug.Log("cursor should be showing");
-            Cursor.visible = true;
-            ShowControlScheme(m_showControls);
-            m_player.GetComponent<PlayerController>().useControls = false;
-        }
+        // "Level_1" scene is open, you can run code in it
+        m_showControls = true;
+        Debug.Log("cursor should be showing");
+        Cursor.visible = true;
+        ShowControlScheme(m_showControls);
+        m_player.GetComponent<PlayerController>().useControls = false;
 
         StartCoroutine(RandomTimerCoroutine());
         //DEBUG
@@ -117,7 +114,15 @@ public class ShipManager : MonoBehaviour, IInteractable
 
     void EndGame()
     {
+        m_player.GetComponent<PlayerController>().useControls = false;
+        endPanel.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
 
+    public void ReturnToMenu()
+    {
+        m_loader.ReturnToMenu();
     }
 
     public void CompleteCurrentTaskInObjective()
