@@ -1505,6 +1505,11 @@ PrefabInstance:
       objectReference: {fileID: 1962156447}
     - target: {fileID: 1592294551206449244, guid: c47c1066b65e89e498cfd7cee4002a4d,
         type: 3}
+      propertyPath: lengthOfProblemDuration
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592294551206449244, guid: c47c1066b65e89e498cfd7cee4002a4d,
+        type: 3}
       propertyPath: m_missionObjectives.Array.data[0].objectiveTasks.Array.data[0].interactableObject
       value: 
       objectReference: {fileID: 1353414418}

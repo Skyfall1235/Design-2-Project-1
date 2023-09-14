@@ -175,7 +175,7 @@ public class ShipManager : MonoBehaviour, IInteractable
         {
             
             // Generate a random waiting time between 1 and 5 seconds (adjust the range as needed).
-            float randomWaitTime = Random.Range(15f, 45f);
+            float randomWaitTime = Random.Range(lengthOfProblemDuration, lengthOfProblemDuration + 25);
 
             Debug.Log(randomWaitTime);
 
@@ -208,7 +208,7 @@ public class ShipManager : MonoBehaviour, IInteractable
     private void DetermineShipProblem()
     {
         choice = 0;
-        timeOutForEvent = Random.Range(lengthOfProblemDuration, lengthOfProblemDuration+25);
+        timeOutForEvent = Random.Range(15, 15+25);
         switch (choice)
         {
             case 0:
