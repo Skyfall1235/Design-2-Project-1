@@ -17,14 +17,16 @@ public class Beacon : BaseInteractactable
 
     public override void Interact()
     {
+        base.Interact();
         if (!hasBeenUsed)
         {
             //if i can interact with it, im close enough. also, only a drill can interact with this anyway.
             Debug.Log("Beacon collided with drill, calling coroutine");
             m_drillAction = StartCoroutine(m_shipManager.DrillActionCountdown(m_countdownTime, InteractableType));
             hasBeenUsed = true;
-            m_light.SetActive(false);
+            return;
         }
+        gameObject.SetActive(false);
     }
 
 
@@ -34,7 +36,7 @@ public class Beacon : BaseInteractactable
         {
             StopCoroutine(m_shipManager.DrillActionCountdown(m_countdownTime, InteractableType));
             hasBeenUsed = false;
-            m_light.SetActive(true);
+            gameObject.SetActive(true);
         }
     }
 

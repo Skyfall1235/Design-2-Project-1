@@ -54,13 +54,13 @@ public class ShipManager : MonoBehaviour, IInteractable
 
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        m_missionObjectives = FindObjectivesLoaderInPlayerScene().m_missionObjectives;
-        
-        SetupTasks();
-        AssignNextObjectiveAndTask();
-        DebugTask(m_currentTask);
+
+        Invoke("SetUpObjectives", 2f);
+
+
+
 
         // "Level_1" scene is open, you can run code in it
         m_showControls = true;
@@ -73,6 +73,16 @@ public class ShipManager : MonoBehaviour, IInteractable
         //DEBUG
         //StartCoroutine(AlternateLights());
     }
+
+    void SetUpObjectives()
+    {
+        m_missionObjectives = FindObjectivesLoaderInPlayerScene().m_missionObjectives;
+        SetupTasks();
+        AssignNextObjectiveAndTask();
+        DebugTask(m_currentTask);
+    }
+
+    
 
     public Objectives_loader FindObjectivesLoaderInPlayerScene()
     {
@@ -312,7 +322,7 @@ public class ShipManager : MonoBehaviour, IInteractable
         }
     }
 
-
+    
     void DebugTask(ObjectiveTask task)
     {
         // Printing the information using Debug.Log
@@ -363,14 +373,17 @@ public class ShipManager : MonoBehaviour, IInteractable
                 m_currentObjective = objective;
                 bool allTasksCompleted = true; // Assume all tasks are completed initially
 
+                // Use a separate variable to track the current task
+                ObjectiveTask currentTask = new();
+
                 foreach (ObjectiveTask task in objective.objectiveTasks)
                 {
                     if (!task.taskCompleted)
                     {
-                        m_currentTask = task;
+                        currentTask = task; // Assign the current task
                         UpdateTaskText();
                         Debug.Log($"Assigned Objective: {m_currentObjective.objectiveDescription}");
-                        Debug.Log($"Assigned task object: {m_currentTask.objectiveObjectName}");
+                        Debug.Log($"Assigned task object: {currentTask.objectiveObjectName}");
                         return; // Exit the loop once a task is assigned
                     }
                     else
@@ -385,6 +398,12 @@ public class ShipManager : MonoBehaviour, IInteractable
                     m_currentObjective.objectiveCompleted = true; // Mark the objective as completed
                     Debug.Log($"Objective completed: {m_currentObjective.objectiveDescription}");
                     currentObjectiveIndex++; // Move to the next objective
+                }
+
+                // If the current task was completed, assign the next task
+                if (currentTask.taskCompleted)
+                {
+                    m_currentTask = currentTask;
                 }
             }
             else
